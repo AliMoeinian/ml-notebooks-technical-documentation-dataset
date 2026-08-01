@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fable Framework — Ground-Truth Evaluation Portal</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 Pro Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #070913;
+            --bg-card: rgba(15, 23, 42, 0.65);
+            --bg-card-hover: rgba(30, 41, 59, 0.8);
+            --primary: #6366f1;
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+            --accent-cyan: #06b6d4;
+            --accent-emerald: #10b981;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-sub: #cbd5e1;
+            --border-glow: rgba(99, 102, 241, 0.25);
+            --border-card: rgba(255, 255, 255, 0.08);
+            --radius-xl: 24px;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            line-height: 1.7;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 3D Dynamic Floating Canvas & Background Elements */
+        .bg-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            opacity: 0.35;
+            animation: pulseOrb 12s infinite alternate ease-in-out;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, #4f46e5 0%, transparent 70%);
+            top: -150px;
+            left: -150px;
+        }
+
+        .orb-2 {
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, #c084fc 0%, transparent 70%);
+            bottom: -200px;
+            right: -150px;
+            animation-delay: -4s;
+        }
+
+        .orb-3 {
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, #06b6d4 0%, transparent 70%);
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -8s;
+        }
+
+        @keyframes pulseOrb {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.3; }
+            100% { transform: scale(1.15) translate(40px, -30px); opacity: 0.45; }
+        }
+
+        /* Floating 3D Floating Tech Badges in Background */
+        .floating-icon {
+            position: absolute;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.25rem;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 50px;
+            color: #e2e8f0;
+            font-size: 0.875rem;
+            font-weight: 600;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            animation: float3d 8s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        .floating-icon i {
+            font-size: 1.25rem;
+        }
+
+        .icon-pos-1 { top: 12%; left: 8%; animation-delay: 0s; }
+        .icon-pos-2 { top: 18%; right: 10%; animation-delay: -2s; }
+        .icon-pos-3 { top: 65%; left: 6%; animation-delay: -4s; }
+        .icon-pos-4 { top: 72%; right: 8%; animation-delay: -1.5s; }
+        .icon-pos-5 { bottom: 12%; left: 22%; animation-delay: -3.5s; }
+
+        @keyframes float3d {
+            0% { transform: translateY(0px) rotate(0deg) scale(1); }
+            50% { transform: translateY(-18px) rotate(2deg) scale(1.03); }
+            100% { transform: translateY(12px) rotate(-2deg) scale(0.98); }
+        }
+
+        /* Container and Structure */
+        .container {
+            max-width: 1050px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Screen Transitions */
+        .screen {
+            display: none;
+            opacity: 0;
+            transform: translateY(30px) scale(0.98);
+            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .screen.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Glassmorphism Card Design */
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-xl);
+            padding: 3rem;
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.5), 0 18px 36px -18px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary-gradient);
+        }
+
+        /* Typography & Gradients */
+        h1, h2, h3, h4 {
+            color: var(--text-main);
+            letter-spacing: -0.02em;
+        }
+
+        .gradient-text {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        /* Screen 1: Launch Styling */
+        .launch-container {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .thesis-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1.2rem;
+            background: rgba(99, 102, 241, 0.12);
+            border: 1px solid var(--border-glow);
+            border-radius: 50px;
+            color: #a5b4fc;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 2rem;
+        }
+
+        .hero-title {
+            font-size: 2.75rem;
+            font-weight: 800;
+            line-height: 1.25;
+            margin-bottom: 2.5rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .metadata-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2.5rem 0;
+        }
+
+        .meta-item {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            text-align: left;
+            transition: border-color 0.3s ease;
+        }
+
+        .meta-item:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+
+        .meta-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: #c084fc;
+            border: 1px solid rgba(192, 132, 252, 0.2);
+        }
+
+        .meta-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .meta-value {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .thank-you-banner {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(6, 182, 212, 0.08) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem 2rem;
+            margin: 2.5rem 0;
+            text-align: center;
+            font-size: 1.05rem;
+            color: var(--text-sub);
+            position: relative;
+        }
+
+        .thank-you-banner i {
+            color: #38bdf8;
+            margin-right: 0.5rem;
+        }
+
+        /* Buttons & Actions */
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 1.1rem 2.75rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            background: var(--primary-gradient);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 30px -5px rgba(99, 102, 241, 0.5);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 35px -3px rgba(168, 85, 247, 0.6);
+        }
+
+        .btn-action i {
+            transition: transform 0.3s ease;
+        }
+
+        .btn-action:hover i {
+            transform: translateX(4px);
+        }
+
+        .btn-secondary {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid var(--border-card);
+            color: var(--text-sub);
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(51, 65, 85, 0.9);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        /* Document Rationale Screens (Screen 2 & 3) */
+        .article-body {
+            font-size: 1.05rem;
+            color: var(--text-sub);
+            line-height: 1.85;
+        }
+
+        .article-body p {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-body h3 {
+            font-size: 1.35rem;
+            color: #38bdf8;
+            margin: 2rem 0 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .highlight-box {
+            background: rgba(15, 23, 42, 0.8);
+            border-left: 4px solid var(--primary);
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+            font-size: 1rem;
+        }
+
+        .highlight-box ul {
+            margin-left: 1.25rem;
+            margin-top: 0.5rem;
+        }
+
+        .highlight-box li {
+            margin-bottom: 0.4rem;
+        }
+
+        .ref-section {
+            margin-top: 2.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .ref-section h4 {
+            color: var(--text-main);
+            margin-bottom: 1rem;
+        }
+
+        .ref-list p {
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            text-indent: -1.5rem;
+        }
+
+        /* Screen 4: Dataset Catalog */
+        .catalog-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .folder-group {
+            margin-bottom: 3.5rem;
+        }
+
+        .folder-header-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .folder-header-title i {
+            color: var(--accent-cyan);
+        }
+
+        .notebook-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .nb-item-card {
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+
+        .nb-item-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(99, 102, 241, 0.5);
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.5);
+            background: rgba(30, 41, 59, 0.85);
+        }
+
+        .nb-item-title {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: #f1f5f9;
+            margin-bottom: 1.25rem;
+            word-break: break-word;
+            line-height: 1.4;
+        }
+
+        .btn-group-dual {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .btn-link-nb, .btn-link-doc {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.65rem 0.8rem;
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-link-nb {
+            background: rgba(6, 182, 212, 0.12);
+            color: #38bdf8;
+            border: 1px solid rgba(6, 182, 212, 0.25);
+        }
+
+        .btn-link-nb:hover {
+            background: rgba(6, 182, 212, 0.25);
+            color: #ffffff;
+        }
+
+        .btn-link-doc {
+            background: rgba(99, 102, 241, 0.15);
+            color: #a5b4fc;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-link-doc:hover {
+            background: rgba(99, 102, 241, 0.3);
+            color: #ffffff;
+        }
+
+        .footer-credit {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 3D Ambient Background & Floating Tech Icons -->
+    <div class="bg-mesh">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+
+        <!-- 3D Floating Tech Badges -->
+        <div class="floating-icon icon-pos-1">
+            <i class="fa-brands fa-python" style="color: #38bdf8;"></i> Python 3
+        </div>
+        <div class="floating-icon icon-pos-2">
+            <i class="fa-solid fa-diagram-project" style="color: #c084fc;"></i> Knowledge Graph
+        </div>
+        <div class="floating-icon icon-pos-3">
+            <i class="fa-solid fa-robot" style="color: #34d399;"></i> Multi-Agent Architecture
+        </div>
+        <div class="floating-icon icon-pos-4">
+            <i class="fa-solid fa-brain" style="color: #f472b6;"></i> LangChain / LLM
+        </div>
+        <div class="floating-icon icon-pos-5">
+            <i class="fa-solid fa-book-bookmark" style="color: #fbbf24;"></i> Jupyter Notebooks
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <!-- ==================== SCREEN 1: LAUNCH SCREEN ==================== -->
+        <div id="screen-1" class="screen active">
+            <div class="glass-card launch-container">
+                <span class="thesis-tag">
+                    <i class="fa-solid fa-graduation-cap"></i> M.Sc. Thesis Human Evaluation Portal
+                </span>
+
+                <h1 class="hero-title gradient-text">
+                    A Knowledge Graph-Based Multi-Agent Framework for Technical Documentation of Machine Learning Notebooks
+                </h1>
+
+                <div class="metadata-box">
+                    <div class="meta-item">
+                        <div class="meta-icon"><i class="fa-solid fa-user-graduate"></i></div>
+                        <div>
+                            <div class="meta-label">Researcher / Student</div>
+                            <div class="meta-value">Ali Moeinian</div>
+                        </div>
+                    </div>
+
+                    <div class="meta-item">
+                        <div class="meta-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+                        <div>
+                            <div class="meta-label">Advisor / Supervisor</div>
+                            <div class="meta-value">Dr. Afsaneh Fatemi</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="thank-you-banner">
+                    <p><i class="fa-solid fa-heart"></i> <strong>Sincere Gratitude:</strong> We express our heartfelt appreciation to all domain experts and participants contributing your valuable time and critical analytical judgment to this human evaluation study.</p>
+                </div>
+
+                <div style="margin-top: 2.5rem;">
+                    <button class="btn-action" onclick="goToScreen(2)">
+                        Begin Evaluation Study <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== SCREEN 2: METHODOLOGICAL RATIONALE (MARKDOWN) ==================== -->
+        <div id="screen-2" class="screen">
+            <div class="glass-card">
+                <h2 class="gradient-text" style="font-size: 2rem; margin-bottom: 1.5rem;">
+                    Why Technical Documentation is Produced in Markdown Format
+                </h2>
+
+                <div class="article-body">
+                    <p>Before reviewing the documentation samples, please read the following short explanation of a key methodological choice in this study: why the output format of the technical documentation you are about to evaluate is Markdown (.md), rather than plain text, HTML, or PDF. This is not an arbitrary implementation choice; it is grounded in the empirical literature on computational notebook documentation, as summarized below.</p>
+
+                    <p>Computational notebooks (e.g., Jupyter) are not plain scripts with comments; they are built, from their conceptual origin in literate programming, as an interleaving of executable code and rendered narrative text, and that narrative text is written and rendered as Markdown. Saeed Siddik's systematic treatment of notebook structure confirms that the Markdown cell is one of the notebook format's defined cell types, and that Jupyter's own official conversion pipeline (nbconvert) treats Markdown as the source representation from which HTML, LaTeX, and PDF outputs are generated (Siddik, 2025). In other words, Markdown is not merely a documentation format notebooks happen to support; it is the specific format from which every other export representation is derived.</p>
+
+                    <p>Independent of the notebook format's internal design, the empirical research literature on notebook documentation quality is itself built around the Markdown cell as its unit of analysis. Two independent research efforts converge on defining "documentation" as Markdown-cell content (Siddik, 2025; Liu et al., 2021). Rule, Tabard, and Hollan's large-scale study of over one million publicly shared notebooks found that 99.8% of all notebook cells are either Markdown or code, establishing Markdown-cell content as the field's own measure of what constitutes a documented notebook (Rule et al., 2018). Most directly relevant to this study, Wang et al.'s CHI 2021 study, which used highly-voted Kaggle notebooks as a proxy for well-documented notebooks, the same rationale this thesis uses for its own dataset, analyzed 80 such notebooks and found that the entirety of observed documentation practice falls into nine Markdown-cell content categories (Process, Headline, Result, Education, Reason, Todo, Reference, Meta-Information, Summary) (Wang et al., 2021).</p>
+
+                    <div class="highlight-box">
+                        <strong>Producing the framework's technical documentation output in Markdown, therefore:</strong>
+                        <ul>
+                            <li><strong>(1)</strong> Preserves structural fidelity with the notebook artifact being documented.</li>
+                            <li><strong>(2)</strong> Aligns the output with the field's own empirical standard for what constitutes documentation, allowing direct comparison against the reference literature.</li>
+                            <li><strong>(3)</strong> Does not sacrifice presentation flexibility, because Markdown is the canonical source format from which polished HTML or PDF versions can be mechanically and losslessly generated at any later point, for example via pandoc or nbconvert-style tooling.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="margin-top: 3rem; display: flex; justify-content: space-between; align-items: center;">
+                    <button class="btn-action btn-secondary" onclick="goToScreen(1)">
+                        <i class="fa-solid fa-arrow-left"></i> Previous Page
+                    </button>
+                    <button class="btn-action" onclick="goToScreen(3)">
+                        Next: Dataset & Structure <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== SCREEN 3: DATASET SELECTION & STRUCTURE ==================== -->
+        <div id="screen-3" class="screen">
+            <div class="glass-card">
+                <h2 class="gradient-text" style="font-size: 2rem; margin-bottom: 1.5rem;">
+                    Dataset Selection Criteria and Ground-Truth Documentation Structure
+                </h2>
+
+                <div class="article-body">
+                    <p>This page explains two further methodological choices underlying the materials you are about to review: how the 20 notebooks in the evaluation dataset were selected, and why the human-authored ground-truth documentation takes the specific structure it does.</p>
+
+                    <h3><i class="fa-solid fa-database"></i> Part A: Dataset Selection</h3>
+                    <p>The 20 notebooks used in this study were selected according to the criteria defined in the thesis proposal, from three independent sources: a public dataset of Kaggle notebooks with rich metadata (KGTorrent; Quaranta, Calefato, & Lanubile, 2021), notebooks independently curated directly from the Kaggle platform, and notebooks independently curated from GitHub. Selection was governed by four criteria, applied jointly: (1) a Kaggle gold/silver medal or a comparable community-engagement threshold, more than 10 votes on Kaggle, or more than 10 stars on the hosting GitHub repository; (2) diversity of the underlying dataset and domain; (3) diversity of complexity and coverage of different stages of the machine learning lifecycle (problem definition, data collection, preprocessing, exploratory data analysis, feature engineering, model selection and training, and model validation); and (4) the presence of rich multimodal outputs, such as charts, tables, and other visual results, as an integral part of the notebook. These criteria were applied deliberately to produce a dataset spanning a wide range of complexity, from short, single-stage notebooks to long, full-lifecycle, multi-model pipelines.</p>
+
+                    <h3><i class="fa-solid fa-sitemap"></i> Part B: Ground-Truth Documentation Structure</h3>
+                    <p>The ground-truth documentation you are about to review was authored as a standalone Markdown document per notebook, rather than as annotations inserted into the notebooks themselves. This was a deliberate methodological choice, made necessary by the evaluation design of this thesis: since the proposed framework generates a single, standalone Markdown file per notebook, the human-authored reference document must take the same form for the two to be meaningfully compared side by side.</p>
+
+                    <p>This choice is further grounded in a substantive distinction the literature draws between code documentation, locally-scoped explanations attached to a specific line or cell of code, and technical documentation in the fuller sense this thesis targets: a structured account of a notebook's purpose, process, reasoning, results, and interpretation, considered as a whole. Wang et al. (2021) found that the dominant, majority use of inline Markdown-cell annotation in real notebooks is local code explanation, while whole-notebook properties, connecting cells that are far apart, synthesizing results across the entire notebook, and covering the full machine learning lifecycle, are, by the same study's own framing, cases that go beyond what locally-scoped annotation typically captures. This gap is echoed throughout the applied literature: Liu et al. (2021) motivate their own documentation-generation model by observing that "one documentation in a markdown cell often corresponds to multiple code cells," and multiple studies link the absence of whole-notebook documentation directly to measured reproducibility failures, for example, Pimentel et al. (2019) found that only 24% of a large sample of GitHub notebooks were fully executable and only 4% reproduced identical results on re-execution, while Kashiwa et al. (2026) found only 2 of 19 attempted notebooks accompanying peer-reviewed Nature publications were successfully reproducible.</p>
+
+                    <div class="highlight-box">
+                        <strong>Accordingly, each ground-truth document was authored using a fixed, six-section structure, applied identically across all 20 notebooks:</strong>
+                        <ol style="margin-left: 1.25rem; margin-top: 0.5rem;">
+                            <li><strong>(1) Notebook Overview:</strong> the problem, dataset, and scope of lifecycle coverage.</li>
+                            <li><strong>(2) Environment and Dependencies:</strong> libraries, versions, and setup.</li>
+                            <li><strong>(3) Per-Stage Documentation:</strong> a subsection for each machine learning lifecycle stage actually present in the notebook, including interpretation of any charts, tables, or metrics produced at that stage.</li>
+                            <li><strong>(4) Cross-Cell Dependency Analysis:</strong> data-driven, result-driven, and model-evolution dependencies connecting cells that are not adjacent to one another.</li>
+                            <li><strong>(5) Model Performance Summary:</strong> evaluation metrics and comparative results consolidated in one place.</li>
+                            <li><strong>(6) Conclusions and Recommendations:</strong> a synthesis of the notebook's overall outcome. This structure was held fixed across all 20 notebooks so that any variation in the resulting documents reflects genuine variation in the underlying notebooks rather than inconsistency in documentation methodology.</li>
+                        </ol>
+                    </div>
+
+                    <!-- Academic References Section -->
+                    <div class="ref-section">
+                        <h4>References</h4>
+                        <div class="ref-list">
+                            <p>Kashiwa, S., Kurdak, A., Ravi, S., Srikanth, R., Thakur, A., Chandra, S., Truong, J., & Coblenz, M. (2026). A Study of Scientific Computational Notebook Quality. arXiv preprint.</p>
+                            <p>Liu, X., Wang, D., Wang, A. Y., Hou, Y., & Wu, L. (2021). HAConvGNN: Hierarchical Attention Based Convolutional Graph Neural Network for Code Documentation Generation in Jupyter Notebooks. In Findings of the Association for Computational Linguistics: EMNLP 2021.</p>
+                            <p>Pimentel, J. F., Murta, L., Braganholo, V., & Freire, J. (2019). A Large-Scale Study About Quality and Reproducibility of Jupyter Notebooks. In Proceedings of the 16th International Conference on Mining Software Repositories (MSR 2019), 507–517.</p>
+                            <p>Quaranta, L., Calefato, F., & Lanubile, F. (2021). KGTorrent: A Dataset of Python Jupyter Notebooks from Kaggle. In 2021 IEEE/ACM 18th International Conference on Mining Software Repositories (MSR), 550–554.</p>
+                            <p>Wang, A. Y., Wang, D., Drozdal, J., Liu, X., Park, S., Oney, S., & Brooks, C. (2021). What Makes a Well-Documented Notebook? A Case Study of Data Scientists' Documentation Practices in Kaggle. In CHI Conference on Human Factors in Computing Systems Extended Abstracts (CHI '21 Extended Abstracts).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 3rem; display: flex; justify-content: space-between; align-items: center;">
+                    <button class="btn-action btn-secondary" onclick="goToScreen(2)">
+                        <i class="fa-solid fa-arrow-left"></i> Previous Page
+                    </button>
+                    <button class="btn-action" onclick="goToScreen(4)">
+                        Proceed to Notebook Catalog <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== SCREEN 4: CATALOG OF NOTEBOOKS ==================== -->
+        <div id="screen-4" class="screen">
+            <div class="glass-card">
+                <div class="catalog-header">
+                    <h2 class="gradient-text" style="font-size: 2.2rem; margin-bottom: 0.5rem;">
+                        Ground-Truth Evaluation Corpus
+                    </h2>
+                    <p style="color: var(--text-muted); font-size: 1.05rem;">
+                        Select any notebook below to access its interactive rendering or human-authored reference documentation.
+                    </p>
+                </div>
+
+                <!-- Catalog Grid Generated Dynamically -->
+                <div id="catalog-container"></div>
+
+                <div style="margin-top: 3rem; display: flex; justify-content: flex-start;">
+                    <button class="btn-action btn-secondary" onclick="goToScreen(3)">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Rationale
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-credit">
+            <p>© 2026 Fable Framework Human Evaluation Portal — M.Sc. Thesis Research</p>
+        </div>
+
+    </div>
+
+    <script>
+        const REPO_OWNER = "AliMoeinian";
+        const REPO_NAME = "ml-notebooks-technical-documentation-dataset";
+        const BRANCH = "main";
+
+        // Dataset Corpus Data Structure
+        const DATASET = [
+            {
+                folder: "Notebooks from KGTorrent",
+                icon: "fa-solid fa-cubes",
+                notebooks: [
+                    "descriptive-statistics-and-machine-learning-iris",
+                    "eda-ensemble-model-top-10-percentile",
+                    "fraud-detection-with-smote-and-randomforest"
+                ]
+            },
+            {
+                folder: "Notebooks from GitHub",
+                icon: "fa-brands fa-github",
+                notebooks: [
+                    "02_end_to_end_machine_learning_project",
+                    "Case_Study2_Maintenance_Predictive_Modelling",
+                    "Case_Study3_Hotel_Prediction",
+                    "Machine Learning for Diabetes",
+                    "Modeling House Price with Regularized Linear Model & Xgboost",
+                    "covid-19-new-cases-in-italy-prediction-arima"
+                ]
+            },
+            {
+                folder: "Notebooks from Kaggle",
+                icon: "fa-solid fa-chart-pie",
+                notebooks: [
+                    "car-price-prediction",
+                    "customer-segmentation-and-clustering-analysis",
+                    "eda-and-models",
+                    "eda-to-prediction-dietanic",
+                    "feature-engineering-for-house-prices",
+                    "machine-learning-with-iris-dataset",
+                    "mental-health-eda-prediction",
+                    "spaceship-titanic-a-complete-guide",
+                    "titanic",
+                    "topic-1-exploratory-data-analysis-with-pandas",
+                    "video-game-sales-eda-visualizations-ml-models"
+                ]
+            }
+        ];
+
+        // Screen Switcher
+        function goToScreen(num) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            const target = document.getElementById(`screen-${num}`);
+            if (target) {
+                target.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Render Catalog Grid
+        function buildCatalog() {
+            const container = document.getElementById('catalog-container');
+            container.innerHTML = '';
+
+            DATASET.forEach(cat => {
+                const group = document.createElement('div');
+                group.className = 'folder-group';
+
+                const title = document.createElement('h3');
+                title.className = 'folder-header-title';
+                title.innerHTML = `<i class="${cat.icon}"></i> ${cat.folder} <span style="color: var(--text-muted); font-size: 0.9rem; font-weight: 500;">(${cat.notebooks.length} Notebooks)</span>`;
+                group.appendChild(title);
+
+                const grid = document.createElement('div');
+                grid.className = 'notebook-cards-grid';
+
+                cat.notebooks.forEach(name => {
+                    // nbviewer URL for .ipynb rendering
+                    const nbPath = `${cat.folder}/${name}.ipynb`;
+                    const nbviewerUrl = `https://nbviewer.org/github/${REPO_OWNER}/${REPO_NAME}/blob/${BRANCH}/${encodeURI(nbPath)}`;
+
+                    // GitHub rendering URL for .md technical documentation
+                    const docPath = `${cat.folder}/${name}_v2.md`;
+                    const githubDocUrl = `https://github.com/${REPO_OWNER}/${REPO_NAME}/blob/${BRANCH}/${encodeURI(docPath)}`;
+
+                    const card = document.createElement('div');
+                    card.className = 'nb-item-card';
+                    card.innerHTML = `
+                        <div class="nb-item-title">${name}</div>
+                        <div class="btn-group-dual">
+                            <a href="${nbviewerUrl}" target="_blank" class="btn-link-nb">
+                                <i class="fa-solid fa-code"></i> Notebook (.ipynb)
+                            </a>
+                            <a href="${githubDocUrl}" target="_blank" class="btn-link-doc">
+                                <i class="fa-solid fa-file-contract"></i> Doc (_v2.md)
+                            </a>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+
+                group.appendChild(grid);
+                container.appendChild(group);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            buildCatalog();
+        });
+    </script>
+</body>
+</html>
