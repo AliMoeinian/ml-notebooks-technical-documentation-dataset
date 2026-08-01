@@ -3,33 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fable Framework — Ground-Truth Evaluation Portal</title>
+    <title>Human Evaluation Portal — Machine Learning Technical Documentation</title>
     
-    <!-- Google Fonts -->
+    <!-- Standard Clean Typography: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- FontAwesome 6 Pro Icons -->
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --bg-dark: #070913;
-            --bg-card: rgba(15, 23, 42, 0.65);
-            --bg-card-hover: rgba(30, 41, 59, 0.8);
+            --bg-dark: #090d16;
+            --bg-card: rgba(17, 24, 39, 0.75);
+            --bg-card-hover: rgba(30, 41, 59, 0.85);
             --primary: #6366f1;
-            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
             --accent-cyan: #06b6d4;
-            --accent-emerald: #10b981;
+            --accent-purple: #c084fc;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --text-sub: #cbd5e1;
-            --border-glow: rgba(99, 102, 241, 0.25);
             --border-card: rgba(255, 255, 255, 0.08);
-            --radius-xl: 24px;
-            --radius-lg: 16px;
-            --radius-md: 12px;
+            --radius-xl: 20px;
+            --radius-lg: 14px;
+            --radius-md: 10px;
         }
 
         * {
@@ -39,7 +38,7 @@
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-main);
             min-height: 100vh;
@@ -48,7 +47,7 @@
             position: relative;
         }
 
-        /* 3D Dynamic Floating Canvas & Background Elements */
+        /* Ambient Glow Mesh */
         .bg-mesh {
             position: fixed;
             top: 0;
@@ -64,83 +63,37 @@
             position: absolute;
             border-radius: 50%;
             filter: blur(140px);
-            opacity: 0.35;
+            opacity: 0.25;
             animation: pulseOrb 12s infinite alternate ease-in-out;
         }
 
         .orb-1 {
-            width: 600px;
-            height: 600px;
+            width: 550px;
+            height: 550px;
             background: radial-gradient(circle, #4f46e5 0%, transparent 70%);
-            top: -150px;
-            left: -150px;
+            top: -120px;
+            left: -120px;
         }
 
         .orb-2 {
-            width: 700px;
-            height: 700px;
+            width: 650px;
+            height: 650px;
             background: radial-gradient(circle, #c084fc 0%, transparent 70%);
-            bottom: -200px;
-            right: -150px;
+            bottom: -150px;
+            right: -120px;
             animation-delay: -4s;
         }
 
-        .orb-3 {
-            width: 450px;
-            height: 450px;
-            background: radial-gradient(circle, #06b6d4 0%, transparent 70%);
-            top: 40%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation-delay: -8s;
-        }
-
         @keyframes pulseOrb {
-            0% { transform: scale(1) translate(0, 0); opacity: 0.3; }
-            100% { transform: scale(1.15) translate(40px, -30px); opacity: 0.45; }
+            0% { transform: scale(1) translate(0, 0); opacity: 0.2; }
+            100% { transform: scale(1.15) translate(30px, -20px); opacity: 0.35; }
         }
 
-        /* Floating 3D Floating Tech Badges in Background */
-        .floating-icon {
-            position: absolute;
-            z-index: 1;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1.25rem;
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 50px;
-            color: #e2e8f0;
-            font-size: 0.875rem;
-            font-weight: 600;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            animation: float3d 8s ease-in-out infinite alternate;
-            pointer-events: none;
-        }
-
-        .floating-icon i {
-            font-size: 1.25rem;
-        }
-
-        .icon-pos-1 { top: 12%; left: 8%; animation-delay: 0s; }
-        .icon-pos-2 { top: 18%; right: 10%; animation-delay: -2s; }
-        .icon-pos-3 { top: 65%; left: 6%; animation-delay: -4s; }
-        .icon-pos-4 { top: 72%; right: 8%; animation-delay: -1.5s; }
-        .icon-pos-5 { bottom: 12%; left: 22%; animation-delay: -3.5s; }
-
-        @keyframes float3d {
-            0% { transform: translateY(0px) rotate(0deg) scale(1); }
-            50% { transform: translateY(-18px) rotate(2deg) scale(1.03); }
-            100% { transform: translateY(12px) rotate(-2deg) scale(0.98); }
-        }
-
-        /* Container and Structure */
+        /* Layout Container */
         .container {
-            max-width: 1050px;
+            max-width: 980px;
             margin: 0 auto;
-            padding: 3rem 1.5rem;
+            padding: 2.5rem 1.25rem;
             position: relative;
             z-index: 2;
         }
@@ -149,43 +102,32 @@
         .screen {
             display: none;
             opacity: 0;
-            transform: translateY(30px) scale(0.98);
-            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(20px);
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .screen.active {
             display: block;
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translateY(0);
         }
 
-        /* Glassmorphism Card Design */
+        /* Ultra-Minimal Glass Card */
         .glass-card {
             background: var(--bg-card);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--border-card);
             border-radius: var(--radius-xl);
-            padding: 3rem;
-            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.5), 0 18px 36px -18px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            padding: 2.75rem 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
             position: relative;
-            overflow: hidden;
-        }
-
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--primary-gradient);
         }
 
         /* Typography & Gradients */
         h1, h2, h3, h4 {
             color: var(--text-main);
-            letter-spacing: -0.02em;
+            letter-spacing: -0.025em;
         }
 
         .gradient-text {
@@ -195,76 +137,127 @@
             display: inline-block;
         }
 
-        /* Screen 1: Launch Styling */
-        .launch-container {
+        /* SCREEN 1: LAUNCH SPECIFIC FLOATING 3D ELEMENTS */
+        .launch-hero-wrapper {
+            position: relative;
+            padding: 1.5rem 0;
             text-align: center;
-            padding: 2rem 0;
+        }
+
+        /* 3D Floating Badges - EXCLUSIVE TO SCREEN 1 */
+        .floating-badge-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-badge {
+            position: absolute;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 1.1rem;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            color: #f1f5f9;
+            font-size: 0.825rem;
+            font-weight: 600;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 15px rgba(99, 102, 241, 0.25);
+            animation: float3d 7s ease-in-out infinite alternate;
+            pointer-events: auto;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .floating-badge:hover {
+            transform: scale(1.08) translateY(-4px);
+            border-color: rgba(99, 102, 241, 0.6);
+        }
+
+        .floating-badge i {
+            font-size: 1.1rem;
+        }
+
+        /* Positioning 10 Prominent Badges Around Screen 1 */
+        .badge-1 { top: -25px; left: -10px; animation-delay: 0s; }
+        .badge-2 { top: -25px; right: -10px; animation-delay: -1.8s; }
+        .badge-3 { top: 25%; left: -60px; animation-delay: -3.5s; }
+        .badge-4 { top: 25%; right: -60px; animation-delay: -1.2s; }
+        .badge-5 { top: 55%; left: -50px; animation-delay: -4.8s; }
+        .badge-6 { top: 55%; right: -50px; animation-delay: -2.5s; }
+        .badge-7 { bottom: 10px; left: 10px; animation-delay: -0.8s; }
+        .badge-8 { bottom: 10px; right: 10px; animation-delay: -3.0s; }
+
+        @keyframes float3d {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-14px) rotate(1.5deg); }
+            100% { transform: translateY(10px) rotate(-1.5deg); }
         }
 
         .thesis-tag {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.4rem 1.2rem;
+            padding: 0.35rem 1.1rem;
             background: rgba(99, 102, 241, 0.12);
-            border: 1px solid var(--border-glow);
+            border: 1px solid rgba(99, 102, 241, 0.3);
             border-radius: 50px;
             color: #a5b4fc;
-            font-size: 0.875rem;
+            font-size: 0.8rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.08em;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .hero-title {
-            font-size: 2.75rem;
+            font-size: 2.25rem;
             font-weight: 800;
-            line-height: 1.25;
-            margin-bottom: 2.5rem;
-            max-width: 900px;
+            line-height: 1.3;
+            margin-bottom: 2rem;
+            max-width: 860px;
             margin-left: auto;
             margin-right: auto;
         }
 
-        .metadata-box {
+        .meta-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin: 2.5rem 0;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem;
+            margin: 2rem 0;
+            text-align: left;
         }
 
-        .meta-item {
-            background: rgba(15, 23, 42, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+        .meta-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.07);
             border-radius: var(--radius-lg);
-            padding: 1.5rem;
+            padding: 1.25rem 1.5rem;
             display: flex;
             align-items: center;
-            gap: 1.25rem;
-            text-align: left;
-            transition: border-color 0.3s ease;
-        }
-
-        .meta-item:hover {
-            border-color: rgba(99, 102, 241, 0.4);
+            gap: 1rem;
         }
 
         .meta-icon {
-            width: 52px;
-            height: 52px;
+            width: 46px;
+            height: 46px;
             border-radius: var(--radius-md);
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
+            font-size: 1.25rem;
             color: #c084fc;
             border: 1px solid rgba(192, 132, 252, 0.2);
         }
 
         .meta-label {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.06em;
             color: var(--text-muted);
@@ -272,282 +265,273 @@
         }
 
         .meta-value {
-            font-size: 1.15rem;
+            font-size: 1.05rem;
             font-weight: 700;
             color: var(--text-main);
         }
 
-        .thank-you-banner {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(6, 182, 212, 0.08) 100%);
+        .thanks-box {
+            background: rgba(99, 102, 241, 0.06);
             border: 1px solid rgba(99, 102, 241, 0.2);
             border-radius: var(--radius-lg);
-            padding: 1.75rem 2rem;
-            margin: 2.5rem 0;
-            text-align: center;
-            font-size: 1.05rem;
+            padding: 1.25rem 1.75rem;
+            margin: 2rem 0;
+            font-size: 0.975rem;
             color: var(--text-sub);
-            position: relative;
         }
 
-        .thank-you-banner i {
-            color: #38bdf8;
-            margin-right: 0.5rem;
-        }
-
-        /* Buttons & Actions */
+        /* Buttons */
         .btn-action {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 0.75rem;
-            padding: 1.1rem 2.75rem;
+            padding: 0.95rem 2.4rem;
             border-radius: 50px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
             color: #ffffff;
             background: var(--primary-gradient);
             border: none;
             cursor: pointer;
-            box-shadow: 0 10px 30px -5px rgba(99, 102, 241, 0.5);
+            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.5);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             text-decoration: none;
-            position: relative;
-            overflow: hidden;
         }
 
         .btn-action:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 15px 35px -3px rgba(168, 85, 247, 0.6);
-        }
-
-        .btn-action i {
-            transition: transform 0.3s ease;
-        }
-
-        .btn-action:hover i {
-            transform: translateX(4px);
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px -3px rgba(139, 92, 246, 0.6);
         }
 
         .btn-secondary {
-            background: rgba(30, 41, 59, 0.8);
+            background: rgba(30, 41, 59, 0.7);
             border: 1px solid var(--border-card);
             color: var(--text-sub);
             box-shadow: none;
         }
 
         .btn-secondary:hover {
-            background: rgba(51, 65, 85, 0.9);
+            background: rgba(51, 65, 85, 0.85);
             color: #ffffff;
-            transform: translateY(-2px);
         }
 
-        /* Document Rationale Screens (Screen 2 & 3) */
-        .article-body {
-            font-size: 1.05rem;
+        /* Content Articles (Screen 2 & 3) */
+        .article-content {
+            font-size: 1.025rem;
             color: var(--text-sub);
             line-height: 1.85;
         }
 
-        .article-body p {
-            margin-bottom: 1.5rem;
+        .article-content p {
+            margin-bottom: 1.4rem;
         }
 
-        .article-body h3 {
-            font-size: 1.35rem;
+        .article-content h3 {
+            font-size: 1.25rem;
             color: #38bdf8;
-            margin: 2rem 0 1rem 0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            margin: 2rem 0 0.85rem 0;
         }
 
-        .highlight-box {
+        .summary-callout {
             background: rgba(15, 23, 42, 0.8);
-            border-left: 4px solid var(--primary);
+            border-left: 3px solid var(--primary);
             border-radius: 0 var(--radius-md) var(--radius-md) 0;
             padding: 1.25rem 1.5rem;
             margin: 1.5rem 0;
-            font-size: 1rem;
         }
 
-        .highlight-box ul {
+        .summary-callout ul, .summary-callout ol {
             margin-left: 1.25rem;
             margin-top: 0.5rem;
         }
 
-        .highlight-box li {
+        .summary-callout li {
             margin-bottom: 0.4rem;
         }
 
-        .ref-section {
+        .reference-block {
             margin-top: 2.5rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.9rem;
+            padding-top: 1.75rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.875rem;
             color: var(--text-muted);
         }
 
-        .ref-section h4 {
+        .reference-block h4 {
             color: var(--text-main);
-            margin-bottom: 1rem;
+            margin-bottom: 0.85rem;
         }
 
-        .ref-list p {
-            margin-bottom: 0.75rem;
+        .reference-block p {
+            margin-bottom: 0.65rem;
             padding-left: 1.5rem;
             text-indent: -1.5rem;
         }
 
-        /* Screen 4: Dataset Catalog */
-        .catalog-header {
-            text-align: center;
+        /* Screen 4: Catalog */
+        .folder-block {
             margin-bottom: 3rem;
         }
 
-        .folder-group {
-            margin-bottom: 3.5rem;
-        }
-
-        .folder-header-title {
-            font-size: 1.4rem;
+        .folder-name-header {
+            font-size: 1.25rem;
             font-weight: 700;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.25rem;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 0.65rem;
+            padding-bottom: 0.65rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .folder-header-title i {
+        .folder-name-header i {
             color: var(--accent-cyan);
         }
 
-        .notebook-cards-grid {
+        .catalog-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 1.25rem;
         }
 
-        .nb-item-card {
+        .nb-card-item {
             background: rgba(15, 23, 42, 0.75);
             border: 1px solid var(--border-card);
             border-radius: var(--radius-lg);
-            padding: 1.5rem;
+            padding: 1.35rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
         }
 
-        .nb-item-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(99, 102, 241, 0.5);
-            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.5);
+        .nb-card-item:hover {
+            transform: translateY(-3px);
+            border-color: rgba(99, 102, 241, 0.45);
             background: rgba(30, 41, 59, 0.85);
         }
 
-        .nb-item-title {
+        .nb-item-name {
             font-weight: 700;
-            font-size: 1.05rem;
+            font-size: 1rem;
             color: #f1f5f9;
             margin-bottom: 1.25rem;
             word-break: break-word;
-            line-height: 1.4;
         }
 
-        .btn-group-dual {
+        .card-btn-row {
             display: flex;
-            gap: 0.6rem;
+            gap: 0.5rem;
         }
 
-        .btn-link-nb, .btn-link-doc {
+        .btn-nb-view, .btn-doc-view {
             flex: 1;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 0.4rem;
-            padding: 0.65rem 0.8rem;
+            padding: 0.6rem 0.75rem;
             border-radius: var(--radius-md);
-            font-size: 0.85rem;
+            font-size: 0.825rem;
             font-weight: 600;
             text-decoration: none;
             transition: all 0.2s ease;
+            text-align: center;
         }
 
-        .btn-link-nb {
+        .btn-nb-view {
             background: rgba(6, 182, 212, 0.12);
             color: #38bdf8;
             border: 1px solid rgba(6, 182, 212, 0.25);
         }
 
-        .btn-link-nb:hover {
+        .btn-nb-view:hover {
             background: rgba(6, 182, 212, 0.25);
             color: #ffffff;
         }
 
-        .btn-link-doc {
+        .btn-doc-view {
             background: rgba(99, 102, 241, 0.15);
             color: #a5b4fc;
             border: 1px solid rgba(99, 102, 241, 0.3);
         }
 
-        .btn-link-doc:hover {
+        .btn-doc-view:hover {
             background: rgba(99, 102, 241, 0.3);
             color: #ffffff;
         }
 
-        .footer-credit {
+        .footer {
             text-align: center;
             color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-top: 4rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.85rem;
+            margin-top: 3.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        /* Mobile Responsiveness for 3D Floating Elements */
+        @media (max-width: 900px) {
+            .badge-3, .badge-4, .badge-5, .badge-6 { display: none; }
+            .hero-title { font-size: 1.8rem; }
+            .container { padding: 1.5rem 1rem; }
+            .glass-card { padding: 1.75rem 1.25rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- 3D Ambient Background & Floating Tech Icons -->
+    <!-- Ambient Glow Mesh -->
     <div class="bg-mesh">
         <div class="glow-orb orb-1"></div>
         <div class="glow-orb orb-2"></div>
-        <div class="glow-orb orb-3"></div>
-
-        <!-- 3D Floating Tech Badges -->
-        <div class="floating-icon icon-pos-1">
-            <i class="fa-brands fa-python" style="color: #38bdf8;"></i> Python 3
-        </div>
-        <div class="floating-icon icon-pos-2">
-            <i class="fa-solid fa-diagram-project" style="color: #c084fc;"></i> Knowledge Graph
-        </div>
-        <div class="floating-icon icon-pos-3">
-            <i class="fa-solid fa-robot" style="color: #34d399;"></i> Multi-Agent Architecture
-        </div>
-        <div class="floating-icon icon-pos-4">
-            <i class="fa-solid fa-brain" style="color: #f472b6;"></i> LangChain / LLM
-        </div>
-        <div class="floating-icon icon-pos-5">
-            <i class="fa-solid fa-book-bookmark" style="color: #fbbf24;"></i> Jupyter Notebooks
-        </div>
     </div>
 
     <div class="container">
         
         <!-- ==================== SCREEN 1: LAUNCH SCREEN ==================== -->
         <div id="screen-1" class="screen active">
-            <div class="glass-card launch-container">
+            <div class="glass-card launch-hero-wrapper">
+                
+                <!-- 3D FLOATING BADGES (VISIBLE EXCLUSIVELY ON SCREEN 1) -->
+                <div class="floating-badge-container">
+                    <div class="floating-badge badge-1">
+                        <i class="fa-brands fa-python" style="color: #38bdf8;"></i> Python 3
+                    </div>
+                    <div class="floating-badge badge-2">
+                        <i class="fa-solid fa-diagram-project" style="color: #c084fc;"></i> Knowledge Graph
+                    </div>
+                    <div class="floating-badge badge-3">
+                        <i class="fa-solid fa-robot" style="color: #34d399;"></i> Multi-Agent System
+                    </div>
+                    <div class="floating-badge badge-4">
+                        <i class="fa-solid fa-brain" style="color: #f472b6;"></i> LangChain / LLM
+                    </div>
+                    <div class="floating-badge badge-5">
+                        <i class="fa-solid fa-cogs" style="color: #fbbf24;"></i> Scikit-Learn
+                    </div>
+                    <div class="floating-badge badge-6">
+                        <i class="fa-solid fa-table" style="color: #60a5fa;"></i> Pandas & NumPy
+                    </div>
+                    <div class="floating-badge badge-7">
+                        <i class="fa-solid fa-book-bookmark" style="color: #a78bfa;"></i> Jupyter Notebooks
+                    </div>
+                    <div class="floating-badge badge-8">
+                        <i class="fa-solid fa-layer-group" style="color: #f43f5e;"></i> ML Lifecycle
+                    </div>
+                </div>
+
                 <span class="thesis-tag">
-                    <i class="fa-solid fa-graduation-cap"></i> M.Sc. Thesis Human Evaluation Portal
+                    <i class="fa-solid fa-graduation-cap"></i> M.Sc. Thesis Human Evaluation Study
                 </span>
 
                 <h1 class="hero-title gradient-text">
                     A Knowledge Graph-Based Multi-Agent Framework for Technical Documentation of Machine Learning Notebooks
                 </h1>
 
-                <div class="metadata-box">
-                    <div class="meta-item">
+                <div class="meta-container">
+                    <div class="meta-card">
                         <div class="meta-icon"><i class="fa-solid fa-user-graduate"></i></div>
                         <div>
                             <div class="meta-label">Researcher / Student</div>
@@ -555,7 +539,7 @@
                         </div>
                     </div>
 
-                    <div class="meta-item">
+                    <div class="meta-card">
                         <div class="meta-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
                         <div>
                             <div class="meta-label">Advisor / Supervisor</div>
@@ -564,48 +548,48 @@
                     </div>
                 </div>
 
-                <div class="thank-you-banner">
-                    <p><i class="fa-solid fa-heart"></i> <strong>Sincere Gratitude:</strong> We express our heartfelt appreciation to all domain experts and participants contributing your valuable time and critical analytical judgment to this human evaluation study.</p>
+                <div class="thanks-box">
+                    <p><i class="fa-solid fa-heart" style="color: #ec4899; margin-right: 0.4rem;"></i> We sincerely thank all experts and participants for offering your valuable time and analytical evaluation for this study.</p>
                 </div>
 
-                <div style="margin-top: 2.5rem;">
+                <div style="margin-top: 2.25rem;">
                     <button class="btn-action" onclick="goToScreen(2)">
-                        Begin Evaluation Study <i class="fa-solid fa-arrow-right"></i>
+                        Start Evaluation <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- ==================== SCREEN 2: METHODOLOGICAL RATIONALE (MARKDOWN) ==================== -->
+        <!-- ==================== SCREEN 2: MARKDOWN METHODOLOGY ==================== -->
         <div id="screen-2" class="screen">
             <div class="glass-card">
-                <h2 class="gradient-text" style="font-size: 2rem; margin-bottom: 1.5rem;">
+                <h2 class="gradient-text" style="font-size: 1.85rem; margin-bottom: 1.5rem;">
                     Why Technical Documentation is Produced in Markdown Format
                 </h2>
 
-                <div class="article-body">
+                <div class="article-content">
                     <p>Before reviewing the documentation samples, please read the following short explanation of a key methodological choice in this study: why the output format of the technical documentation you are about to evaluate is Markdown (.md), rather than plain text, HTML, or PDF. This is not an arbitrary implementation choice; it is grounded in the empirical literature on computational notebook documentation, as summarized below.</p>
 
                     <p>Computational notebooks (e.g., Jupyter) are not plain scripts with comments; they are built, from their conceptual origin in literate programming, as an interleaving of executable code and rendered narrative text, and that narrative text is written and rendered as Markdown. Saeed Siddik's systematic treatment of notebook structure confirms that the Markdown cell is one of the notebook format's defined cell types, and that Jupyter's own official conversion pipeline (nbconvert) treats Markdown as the source representation from which HTML, LaTeX, and PDF outputs are generated (Siddik, 2025). In other words, Markdown is not merely a documentation format notebooks happen to support; it is the specific format from which every other export representation is derived.</p>
 
                     <p>Independent of the notebook format's internal design, the empirical research literature on notebook documentation quality is itself built around the Markdown cell as its unit of analysis. Two independent research efforts converge on defining "documentation" as Markdown-cell content (Siddik, 2025; Liu et al., 2021). Rule, Tabard, and Hollan's large-scale study of over one million publicly shared notebooks found that 99.8% of all notebook cells are either Markdown or code, establishing Markdown-cell content as the field's own measure of what constitutes a documented notebook (Rule et al., 2018). Most directly relevant to this study, Wang et al.'s CHI 2021 study, which used highly-voted Kaggle notebooks as a proxy for well-documented notebooks, the same rationale this thesis uses for its own dataset, analyzed 80 such notebooks and found that the entirety of observed documentation practice falls into nine Markdown-cell content categories (Process, Headline, Result, Education, Reason, Todo, Reference, Meta-Information, Summary) (Wang et al., 2021).</p>
 
-                    <div class="highlight-box">
+                    <div class="summary-callout">
                         <strong>Producing the framework's technical documentation output in Markdown, therefore:</strong>
                         <ul>
-                            <li><strong>(1)</strong> Preserves structural fidelity with the notebook artifact being documented.</li>
-                            <li><strong>(2)</strong> Aligns the output with the field's own empirical standard for what constitutes documentation, allowing direct comparison against the reference literature.</li>
-                            <li><strong>(3)</strong> Does not sacrifice presentation flexibility, because Markdown is the canonical source format from which polished HTML or PDF versions can be mechanically and losslessly generated at any later point, for example via pandoc or nbconvert-style tooling.</li>
+                            <li><strong>(1) Preserves structural fidelity</strong> with the notebook artifact being documented.</li>
+                            <li><strong>(2) Aligns the output</strong> with the field's own empirical standard for what constitutes documentation, allowing direct comparison against the reference literature.</li>
+                            <li><strong>(3) Does not sacrifice presentation flexibility</strong>, because Markdown is the canonical source format from which polished HTML or PDF versions can be mechanically and losslessly generated at any later point, for example via pandoc or nbconvert-style tooling.</li>
                         </ul>
                     </div>
                 </div>
 
-                <div style="margin-top: 3rem; display: flex; justify-content: space-between; align-items: center;">
+                <div style="margin-top: 2.5rem; display: flex; justify-content: space-between; align-items: center;">
                     <button class="btn-action btn-secondary" onclick="goToScreen(1)">
-                        <i class="fa-solid fa-arrow-left"></i> Previous Page
+                        <i class="fa-solid fa-arrow-left"></i> Previous
                     </button>
                     <button class="btn-action" onclick="goToScreen(3)">
-                        Next: Dataset & Structure <i class="fa-solid fa-arrow-right"></i>
+                        Next <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
@@ -614,22 +598,22 @@
         <!-- ==================== SCREEN 3: DATASET SELECTION & STRUCTURE ==================== -->
         <div id="screen-3" class="screen">
             <div class="glass-card">
-                <h2 class="gradient-text" style="font-size: 2rem; margin-bottom: 1.5rem;">
+                <h2 class="gradient-text" style="font-size: 1.85rem; margin-bottom: 1.5rem;">
                     Dataset Selection Criteria and Ground-Truth Documentation Structure
                 </h2>
 
-                <div class="article-body">
+                <div class="article-content">
                     <p>This page explains two further methodological choices underlying the materials you are about to review: how the 20 notebooks in the evaluation dataset were selected, and why the human-authored ground-truth documentation takes the specific structure it does.</p>
 
-                    <h3><i class="fa-solid fa-database"></i> Part A: Dataset Selection</h3>
+                    <h3>Part A: Dataset Selection</h3>
                     <p>The 20 notebooks used in this study were selected according to the criteria defined in the thesis proposal, from three independent sources: a public dataset of Kaggle notebooks with rich metadata (KGTorrent; Quaranta, Calefato, & Lanubile, 2021), notebooks independently curated directly from the Kaggle platform, and notebooks independently curated from GitHub. Selection was governed by four criteria, applied jointly: (1) a Kaggle gold/silver medal or a comparable community-engagement threshold, more than 10 votes on Kaggle, or more than 10 stars on the hosting GitHub repository; (2) diversity of the underlying dataset and domain; (3) diversity of complexity and coverage of different stages of the machine learning lifecycle (problem definition, data collection, preprocessing, exploratory data analysis, feature engineering, model selection and training, and model validation); and (4) the presence of rich multimodal outputs, such as charts, tables, and other visual results, as an integral part of the notebook. These criteria were applied deliberately to produce a dataset spanning a wide range of complexity, from short, single-stage notebooks to long, full-lifecycle, multi-model pipelines.</p>
 
-                    <h3><i class="fa-solid fa-sitemap"></i> Part B: Ground-Truth Documentation Structure</h3>
+                    <h3>Part B: Ground-Truth Documentation Structure</h3>
                     <p>The ground-truth documentation you are about to review was authored as a standalone Markdown document per notebook, rather than as annotations inserted into the notebooks themselves. This was a deliberate methodological choice, made necessary by the evaluation design of this thesis: since the proposed framework generates a single, standalone Markdown file per notebook, the human-authored reference document must take the same form for the two to be meaningfully compared side by side.</p>
 
                     <p>This choice is further grounded in a substantive distinction the literature draws between code documentation, locally-scoped explanations attached to a specific line or cell of code, and technical documentation in the fuller sense this thesis targets: a structured account of a notebook's purpose, process, reasoning, results, and interpretation, considered as a whole. Wang et al. (2021) found that the dominant, majority use of inline Markdown-cell annotation in real notebooks is local code explanation, while whole-notebook properties, connecting cells that are far apart, synthesizing results across the entire notebook, and covering the full machine learning lifecycle, are, by the same study's own framing, cases that go beyond what locally-scoped annotation typically captures. This gap is echoed throughout the applied literature: Liu et al. (2021) motivate their own documentation-generation model by observing that "one documentation in a markdown cell often corresponds to multiple code cells," and multiple studies link the absence of whole-notebook documentation directly to measured reproducibility failures, for example, Pimentel et al. (2019) found that only 24% of a large sample of GitHub notebooks were fully executable and only 4% reproduced identical results on re-execution, while Kashiwa et al. (2026) found only 2 of 19 attempted notebooks accompanying peer-reviewed Nature publications were successfully reproducible.</p>
 
-                    <div class="highlight-box">
+                    <div class="summary-callout">
                         <strong>Accordingly, each ground-truth document was authored using a fixed, six-section structure, applied identically across all 20 notebooks:</strong>
                         <ol style="margin-left: 1.25rem; margin-top: 0.5rem;">
                             <li><strong>(1) Notebook Overview:</strong> the problem, dataset, and scope of lifecycle coverage.</li>
@@ -641,25 +625,23 @@
                         </ol>
                     </div>
 
-                    <!-- Academic References Section -->
-                    <div class="ref-section">
+                    <!-- References -->
+                    <div class="reference-block">
                         <h4>References</h4>
-                        <div class="ref-list">
-                            <p>Kashiwa, S., Kurdak, A., Ravi, S., Srikanth, R., Thakur, A., Chandra, S., Truong, J., & Coblenz, M. (2026). A Study of Scientific Computational Notebook Quality. arXiv preprint.</p>
-                            <p>Liu, X., Wang, D., Wang, A. Y., Hou, Y., & Wu, L. (2021). HAConvGNN: Hierarchical Attention Based Convolutional Graph Neural Network for Code Documentation Generation in Jupyter Notebooks. In Findings of the Association for Computational Linguistics: EMNLP 2021.</p>
-                            <p>Pimentel, J. F., Murta, L., Braganholo, V., & Freire, J. (2019). A Large-Scale Study About Quality and Reproducibility of Jupyter Notebooks. In Proceedings of the 16th International Conference on Mining Software Repositories (MSR 2019), 507–517.</p>
-                            <p>Quaranta, L., Calefato, F., & Lanubile, F. (2021). KGTorrent: A Dataset of Python Jupyter Notebooks from Kaggle. In 2021 IEEE/ACM 18th International Conference on Mining Software Repositories (MSR), 550–554.</p>
-                            <p>Wang, A. Y., Wang, D., Drozdal, J., Liu, X., Park, S., Oney, S., & Brooks, C. (2021). What Makes a Well-Documented Notebook? A Case Study of Data Scientists' Documentation Practices in Kaggle. In CHI Conference on Human Factors in Computing Systems Extended Abstracts (CHI '21 Extended Abstracts).</p>
-                        </div>
+                        <p>Kashiwa, S., Kurdak, A., Ravi, S., Srikanth, R., Thakur, A., Chandra, S., Truong, J., & Coblenz, M. (2026). A Study of Scientific Computational Notebook Quality. arXiv preprint.</p>
+                        <p>Liu, X., Wang, D., Wang, A. Y., Hou, Y., & Wu, L. (2021). HAConvGNN: Hierarchical Attention Based Convolutional Graph Neural Network for Code Documentation Generation in Jupyter Notebooks. In Findings of the Association for Computational Linguistics: EMNLP 2021.</p>
+                        <p>Pimentel, J. F., Murta, L., Braganholo, V., & Freire, J. (2019). A Large-Scale Study About Quality and Reproducibility of Jupyter Notebooks. In Proceedings of the 16th International Conference on Mining Software Repositories (MSR 2019), 507–517.</p>
+                        <p>Quaranta, L., Calefato, F., & Lanubile, F. (2021). KGTorrent: A Dataset of Python Jupyter Notebooks from Kaggle. In 2021 IEEE/ACM 18th International Conference on Mining Software Repositories (MSR), 550–554.</p>
+                        <p>Wang, A. Y., Wang, D., Drozdal, J., Liu, X., Park, S., Oney, S., & Brooks, C. (2021). What Makes a Well-Documented Notebook? A Case Study of Data Scientists' Documentation Practices in Kaggle. In CHI Conference on Human Factors in Computing Systems Extended Abstracts (CHI '21 Extended Abstracts).</p>
                     </div>
                 </div>
 
-                <div style="margin-top: 3rem; display: flex; justify-content: space-between; align-items: center;">
+                <div style="margin-top: 2.5rem; display: flex; justify-content: space-between; align-items: center;">
                     <button class="btn-action btn-secondary" onclick="goToScreen(2)">
-                        <i class="fa-solid fa-arrow-left"></i> Previous Page
+                        <i class="fa-solid fa-arrow-left"></i> Previous
                     </button>
                     <button class="btn-action" onclick="goToScreen(4)">
-                        Proceed to Notebook Catalog <i class="fa-solid fa-arrow-right"></i>
+                        Proceed to Catalog <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
@@ -668,19 +650,18 @@
         <!-- ==================== SCREEN 4: CATALOG OF NOTEBOOKS ==================== -->
         <div id="screen-4" class="screen">
             <div class="glass-card">
-                <div class="catalog-header">
-                    <h2 class="gradient-text" style="font-size: 2.2rem; margin-bottom: 0.5rem;">
-                        Ground-Truth Evaluation Corpus
+                <div style="text-align: center; margin-bottom: 2.5rem;">
+                    <h2 class="gradient-text" style="font-size: 2rem; margin-bottom: 0.5rem;">
+                        Evaluation Notebook Catalog
                     </h2>
-                    <p style="color: var(--text-muted); font-size: 1.05rem;">
-                        Select any notebook below to access its interactive rendering or human-authored reference documentation.
+                    <p style="color: var(--text-muted); font-size: 1rem;">
+                        Select any notebook below to open its native HTML rendering or human-authored reference documentation.
                     </p>
                 </div>
 
-                <!-- Catalog Grid Generated Dynamically -->
                 <div id="catalog-container"></div>
 
-                <div style="margin-top: 3rem; display: flex; justify-content: flex-start;">
+                <div style="margin-top: 2.5rem; display: flex; justify-content: flex-start;">
                     <button class="btn-action btn-secondary" onclick="goToScreen(3)">
                         <i class="fa-solid fa-arrow-left"></i> Back to Rationale
                     </button>
@@ -688,8 +669,8 @@
             </div>
         </div>
 
-        <div class="footer-credit">
-            <p>© 2026 Fable Framework Human Evaluation Portal — M.Sc. Thesis Research</p>
+        <div class="footer">
+            <p>© 2026 Human Evaluation Study — M.Sc. Thesis Research</p>
         </div>
 
     </div>
@@ -699,7 +680,7 @@
         const REPO_NAME = "ml-notebooks-technical-documentation-dataset";
         const BRANCH = "main";
 
-        // Dataset Corpus Data Structure
+        // Dataset Corpus Data Mapping
         const DATASET = [
             {
                 folder: "Notebooks from KGTorrent",
@@ -741,7 +722,7 @@
             }
         ];
 
-        // Screen Switcher
+        // Screen Navigation
         function goToScreen(num) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             const target = document.getElementById(`screen-${num}`);
@@ -758,35 +739,33 @@
 
             DATASET.forEach(cat => {
                 const group = document.createElement('div');
-                group.className = 'folder-group';
+                group.className = 'folder-block';
 
                 const title = document.createElement('h3');
-                title.className = 'folder-header-title';
-                title.innerHTML = `<i class="${cat.icon}"></i> ${cat.folder} <span style="color: var(--text-muted); font-size: 0.9rem; font-weight: 500;">(${cat.notebooks.length} Notebooks)</span>`;
+                title.className = 'folder-name-header';
+                title.innerHTML = `<i class="${cat.icon}"></i> ${cat.folder} <span style="color: var(--text-muted); font-size: 0.85rem; font-weight: 500;">(${cat.notebooks.length})</span>`;
                 group.appendChild(title);
 
                 const grid = document.createElement('div');
-                grid.className = 'notebook-cards-grid';
+                grid.className = 'catalog-grid';
 
                 cat.notebooks.forEach(name => {
-                    // nbviewer URL for .ipynb rendering
-                    const nbPath = `${cat.folder}/${name}.ipynb`;
-                    const nbviewerUrl = `https://nbviewer.org/github/${REPO_OWNER}/${REPO_NAME}/blob/${BRANCH}/${encodeURI(nbPath)}`;
+                    // Native HTML rendering URL hosted directly on GitHub Pages
+                    const htmlUrl = `${encodeURIComponent(cat.folder)}/${encodeURIComponent(name)}.html`;
 
-                    // GitHub rendering URL for .md technical documentation
-                    const docPath = `${cat.folder}/${name}_v2.md`;
-                    const githubDocUrl = `https://github.com/${REPO_OWNER}/${REPO_NAME}/blob/${BRANCH}/${encodeURI(docPath)}`;
+                    // GitHub rendered view for Markdown technical documentation
+                    const docUrl = `https://github.com/${REPO_OWNER}/${REPO_NAME}/blob/${BRANCH}/${encodeURIComponent(cat.folder)}/${encodeURIComponent(name)}_v2.md`;
 
                     const card = document.createElement('div');
-                    card.className = 'nb-item-card';
+                    card.className = 'nb-card-item';
                     card.innerHTML = `
-                        <div class="nb-item-title">${name}</div>
-                        <div class="btn-group-dual">
-                            <a href="${nbviewerUrl}" target="_blank" class="btn-link-nb">
-                                <i class="fa-solid fa-code"></i> Notebook (.ipynb)
+                        <div class="nb-item-name">${name}</div>
+                        <div class="card-btn-row">
+                            <a href="${htmlUrl}" target="_blank" class="btn-nb-view">
+                                <i class="fa-solid fa-code"></i> Notebook
                             </a>
-                            <a href="${githubDocUrl}" target="_blank" class="btn-link-doc">
-                                <i class="fa-solid fa-file-contract"></i> Doc (_v2.md)
+                            <a href="${docUrl}" target="_blank" class="btn-doc-view">
+                                <i class="fa-solid fa-file-lines"></i> Technical Documentation
                             </a>
                         </div>
                     `;
