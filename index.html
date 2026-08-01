@@ -440,7 +440,95 @@
             line-height: 1.6;
         }
 
-        /* ===================== SCREEN 4: CATALOG ===================== */
+        /* ===================== SCREEN 4: NOTEBOOK SELECTION TABLES ===================== */
+        .selection-intro { max-width: 680px; margin: 0 0 var(--sp-40); }
+        .selection-intro p { font-size: 15px; color: var(--color-silver-mist); }
+
+        .eval-section { margin-bottom: var(--sp-40); }
+
+        .eval-section-title {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--color-platinum);
+            margin-bottom: var(--sp-16);
+        }
+
+        .eval-section-title .eval-count {
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            text-transform: none;
+            color: var(--color-slate-deep);
+        }
+
+        .eval-table-wrap {
+            background: var(--color-liquid-deep);
+            border-radius: var(--radius-card);
+            overflow: hidden;
+        }
+
+        .eval-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .eval-table thead th {
+            text-align: left;
+            padding: 12px 20px;
+            font-size: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-slate-deep);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            white-space: nowrap;
+        }
+
+        .eval-table tbody td {
+            padding: 13px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            vertical-align: top;
+            font-size: 12.5px;
+            line-height: 1.55;
+            color: var(--color-silver-mist);
+        }
+
+        .eval-table tbody tr:last-child td { border-bottom: none; }
+        .eval-table tbody tr:hover td { background: rgba(255, 255, 255, 0.025); }
+
+        .eval-table td.nb-name {
+            color: var(--color-platinum);
+            font-weight: 500;
+            font-size: 13px;
+            width: 27%;
+        }
+
+        .eval-table td.nb-medal {
+            color: var(--color-liquid-mist);
+            font-size: 12px;
+            white-space: nowrap;
+            width: 17%;
+        }
+
+        .eval-table td.nb-reason { color: var(--color-silver-mist); }
+
+        @media (max-width: 720px) {
+            .eval-table thead { display: none; }
+            .eval-table, .eval-table tbody, .eval-table tr, .eval-table td {
+                display: block;
+                width: 100% !important;
+            }
+            .eval-table tbody tr { padding: var(--sp-16) 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+            .eval-table tbody td { border-bottom: none; padding: 3px 0; }
+            .eval-table td.nb-medal { margin-bottom: 4px; }
+        }
+
+        /* ===================== SCREEN 5: CATALOG ===================== */
         .catalog-intro { text-align: center; max-width: 560px; margin: 0 auto var(--sp-48); }
         .catalog-intro p { color: var(--color-silver-mist); font-size: 16px; margin-top: var(--sp-12); }
 
@@ -483,10 +571,14 @@
             flex-direction: column;
             justify-content: space-between;
             gap: var(--sp-20);
-            transition: background 0.2s ease;
+            border: 1px solid transparent;
+            transition: background 0.2s ease, border-color 0.2s ease;
         }
 
-        .nb-card-item:hover { background: #004b46; }
+        .nb-card-item:hover {
+            background: #004b46;
+            border-color: rgba(237, 255, 254, 0.45);
+        }
 
         .nb-item-name {
             font-weight: 500;
@@ -511,7 +603,8 @@
             letter-spacing: 0.04em;
             text-decoration: none;
             text-align: center;
-            transition: background 0.2s ease, color 0.2s ease;
+            border: 1px solid transparent;
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
         }
 
         .btn-nb-view {
@@ -519,14 +612,37 @@
             color: var(--color-liquid-mist);
         }
 
-        .btn-nb-view:hover { background: rgba(3, 81, 75, 0.9); color: var(--color-platinum); }
+        .btn-nb-view:hover {
+            background: rgba(3, 81, 75, 0.9);
+            color: var(--color-platinum);
+            border-color: rgba(237, 255, 254, 0.6);
+        }
 
         .btn-doc-view {
             background: rgba(255, 255, 255, 0.06);
             color: var(--color-silver-mist);
         }
 
-        .btn-doc-view:hover { background: rgba(255, 255, 255, 0.12); color: var(--color-platinum); }
+        .btn-doc-view:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--color-platinum);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .closing-note {
+            margin-top: var(--sp-40);
+            padding: var(--sp-20) var(--sp-28);
+            border-radius: var(--radius-card);
+            background: var(--color-liquid-deep);
+            font-size: 14px;
+            color: var(--color-ash);
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .closing-note i { color: var(--color-lavender-phosphor); margin-top: 2px; }
 
         /* ===================== FOOTER ===================== */
         .site-footer {
@@ -563,7 +679,8 @@
                 <li><button class="step-link" data-target="1" onclick="goToScreen(1)"><span class="step-index">01</span><span class="step-label">Overview</span></button></li>
                 <li><button class="step-link" data-target="2" onclick="goToScreen(2)"><span class="step-index">02</span><span class="step-label">Methodology</span></button></li>
                 <li><button class="step-link" data-target="3" onclick="goToScreen(3)"><span class="step-index">03</span><span class="step-label">Dataset</span></button></li>
-                <li><button class="step-link" data-target="4" onclick="goToScreen(4)"><span class="step-index">04</span><span class="step-label">Catalog</span></button></li>
+                <li><button class="step-link" data-target="4" onclick="goToScreen(4)"><span class="step-index">04</span><span class="step-label">Selection</span></button></li>
+                <li><button class="step-link" data-target="5" onclick="goToScreen(5)"><span class="step-index">05</span><span class="step-label">Catalog</span></button></li>
             </ul>
         </div>
     </nav>
@@ -703,14 +820,175 @@
                         <i class="fa-solid fa-arrow-left"></i> Previous
                     </button>
                     <button class="btn btn-primary" onclick="goToScreen(4)">
+                        View Notebook Selection <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== SCREEN 4: NOTEBOOK SELECTION BY SOURCE ==================== -->
+        <div id="screen-4" class="screen">
+            <div class="surface-card">
+                <h2 class="section-title">
+                    Final Evaluation Dataset: 20 Selected Notebooks by Source
+                </h2>
+
+                <div class="selection-intro">
+                    <p>The 20 notebooks introduced in the previous section are listed below, grouped by their source. For each notebook, the table shows its community recognition (medal, votes, or GitHub stars) and the specific reason it was included in the evaluation dataset.</p>
+                </div>
+
+                <div class="eval-section">
+                    <div class="eval-section-title">1. KGTorrent-Derived Subset <span class="eval-count">(3 notebooks)</span></div>
+                    <div class="eval-table-wrap">
+                        <table class="eval-table">
+                            <thead>
+                                <tr><th>Notebook</th><th>Medal / Votes</th><th>Reason for Selection</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="nb-name">eda-ensemble-model-top-10-percentile</td>
+                                    <td class="nb-medal">Gold — 444 votes</td>
+                                    <td class="nb-reason">Full lifecycle coverage (EDA → regression → ensemble modeling); highest-voted candidate in the KGTorrent pool</td>
+                                </tr>
+                                <tr>
+                                    <td class="nb-name">fraud-detection-with-smote-and-randomforest</td>
+                                    <td class="nb-medal">Bronze — 12 votes</td>
+                                    <td class="nb-reason">Specialized feature engineering (SMOTE class-imbalance handling), not represented elsewhere</td>
+                                </tr>
+                                <tr>
+                                    <td class="nb-name">descriptive-statistics-and-machine-learning-iris</td>
+                                    <td class="nb-medal">Bronze — 22 votes</td>
+                                    <td class="nb-reason">Short, low-complexity anchor of the dataset's complexity spectrum</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="eval-section">
+                    <div class="eval-section-title">2. Independently Curated Kaggle Notebooks <span class="eval-count">(11 notebooks)</span></div>
+                    <div class="eval-table-wrap">
+                        <table class="eval-table">
+                            <thead>
+                                <tr><th>Notebook</th><th>Medal / Votes</th><th>Reason for Selection</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="nb-name">car-price-prediction</td>
+                                    <td class="nb-medal">Not verified — pending manual confirmation</td>
+                                    <td class="nb-reason">Tabular regression domain diversity (automotive pricing)</td>
+                                </tr>
+                                <tr>
+                                    <td class="nb-name">customer-segmentation-and-clustering-analysis</td>
+                                    <td class="nb-medal">Kaggle Master tier</td>
+                                    <td class="nb-reason">Unsupervised clustering / customer segmentation</td>
+                                </tr>
+                                <tr>
+                                    <td class="nb-name">eda-and-models</td>
+                                    <td class="nb-medal">Kaggle Notebooks Grandmaster (#1 globally)</td>
+                                    <td class="nb-reason">Full EDA-to-modeling pipeline by a top-recognized author; fraud detection domain</td>
+                                </tr>
+                                <tr>
+                                    <td class="nb-name">eda-to-prediction-dietanic</td>
+                                    <td class="nb-medal">Community "Star Notebook"; cited in a peer-reviewed paper (2023)</td>
+                                    <td class="nb-reason">Canonical, externally validated Titanic full-lifecycle example</td>
+                                </tr>
+                                <tr>
+                                    <td class="nb-name">video-game-sales-eda-visualizations-ml-models</td>
+                                    <td class="nb-medal">Not verified — pending manual confirmation</td>
+                                    <td class="nb-reason">Domain diversity (entertainment/gaming sales)</td>
+                                </tr>
+                                <tr>
+                                    <td class="nb-name">feature-engineering-for-house-prices</td>
+                                    <td class="nb-medal">Not verified — pending manual confirmation</td>
+                                    <td class="nb-reason">Regression feature engineering; ⚠️ originality vs. "ryanholbrook"'s notebook of the same title should be manually verified</td>
+                                </tr>
+                                <tr>
+                                    <td class="nb-name">machine-learning-with-iris-dataset</td>
+                                    <td class="nb-medal">Not verified — pending manual confirmation</td>
+                                    <td class="nb-reason">KNN classification variant on the Iris dataset</td>
+                                </tr>
+                                <tr>
+                                    <td class="nb-name">mental-health-eda-prediction</td>
+                                    <td class="nb-medal">Cited in a 2025 academic paper (IIETA)</td>
+                                    <td class="nb-reason">Sensitive/healthcare domain diversity</td>
+                                </tr>
+                                <tr>
+                                    <td class="nb-name">spaceship-titanic-a-complete-guide</td>
+                                    <td class="nb-medal">Widely referenced across tutorials</td>
+                                    <td class="nb-reason">Full-lifecycle notebook on a modern (2022) competition dataset</td>
+                                </tr>
+                                <tr>
+                                    <td class="nb-name">topic-1-exploratory-data-analysis-with-pandas</td>
+                                    <td class="nb-medal">Community "Star Notebook"; mlcourse.ai curriculum</td>
+                                    <td class="nb-reason">Low-complexity, pedagogical EDA anchor</td>
+                                </tr>
+                                <tr>
+                                    <td class="nb-name">titanic</td>
+                                    <td class="nb-medal">Not verified — pending manual confirmation</td>
+                                    <td class="nb-reason">Additional Titanic-domain variant, submission-generation focus</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="eval-section">
+                    <div class="eval-section-title">3. Independently Curated GitHub Notebooks <span class="eval-count">(6 notebooks)</span></div>
+                    <div class="eval-table-wrap">
+                        <table class="eval-table">
+                            <thead>
+                                <tr><th>Notebook</th><th>Stars</th><th>Reason for Selection</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="nb-name">02_end_to_end_machine_learning_project</td>
+                                    <td class="nb-medal">13,400★</td>
+                                    <td class="nb-reason">Canonical full ML lifecycle notebook</td>
+                                </tr>
+                                <tr>
+                                    <td class="nb-name">Case_Study2_Maintenance_Predictive_Modelling</td>
+                                    <td class="nb-medal">21★</td>
+                                    <td class="nb-reason">Industrial/IoT predictive maintenance domain</td>
+                                </tr>
+                                <tr>
+                                    <td class="nb-name">Case_Study3_Hotel_Prediction</td>
+                                    <td class="nb-medal">21★</td>
+                                    <td class="nb-reason">Hospitality/hotel-booking domain</td>
+                                </tr>
+                                <tr>
+                                    <td class="nb-name">covid-19-new-cases-in-italy-prediction-arima</td>
+                                    <td class="nb-medal">0★</td>
+                                    <td class="nb-reason">High quality notebook with full coverage of the intended criteria</td>
+                                </tr>
+                                <tr>
+                                    <td class="nb-name">Machine Learning for Diabetes</td>
+                                    <td class="nb-medal">4.6k★</td>
+                                    <td class="nb-reason">Short, low-complexity anchor; healthcare domain</td>
+                                </tr>
+                                <tr>
+                                    <td class="nb-name">Modeling House Price with Regularized Linear Model & Xgboost</td>
+                                    <td class="nb-medal">4.6k★</td>
+                                    <td class="nb-reason">Regression with gradient boosting (XGBoost)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="btn-row">
+                    <button class="btn btn-ghost" onclick="goToScreen(3)">
+                        <i class="fa-solid fa-arrow-left"></i> Previous
+                    </button>
+                    <button class="btn btn-primary" onclick="goToScreen(5)">
                         Proceed to Catalog <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- ==================== SCREEN 4: CATALOG OF NOTEBOOKS ==================== -->
-        <div id="screen-4" class="screen">
+        <!-- ==================== SCREEN 5: CATALOG OF NOTEBOOKS ==================== -->
+        <div id="screen-5" class="screen">
             <div class="surface-card">
                 <div class="catalog-intro">
                     <h2 class="section-title" style="margin-bottom: 0;">
@@ -724,9 +1002,14 @@
                 <div id="catalog-container"></div>
 
                 <div class="btn-row" style="justify-content: flex-start;">
-                    <button class="btn btn-ghost" onclick="goToScreen(3)">
-                        <i class="fa-solid fa-arrow-left"></i> Back to Rationale
+                    <button class="btn btn-ghost" onclick="goToScreen(4)">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Selection
                     </button>
+                </div>
+
+                <div class="closing-note">
+                    <i class="fa-solid fa-clipboard-check"></i>
+                    <span>After reviewing the notebooks together with their technical documentation, return to the survey page to rate and submit your evaluation.</span>
                 </div>
             </div>
         </div>
