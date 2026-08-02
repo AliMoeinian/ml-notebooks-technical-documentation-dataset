@@ -440,6 +440,112 @@
             line-height: 1.6;
         }
 
+        .collapsible {
+            background: var(--color-liquid-deep);
+            border-radius: var(--radius-card);
+            margin: var(--sp-28) 0;
+        }
+
+        .collapsible summary {
+            list-style: none;
+            cursor: pointer;
+            padding: var(--sp-20) var(--sp-28);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--sp-16);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-platinum);
+        }
+
+        .collapsible summary::-webkit-details-marker { display: none; }
+
+        .collapsible summary .chevron {
+            color: var(--color-liquid-mist);
+            font-size: 12px;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .collapsible[open] summary .chevron { transform: rotate(180deg); }
+
+        .collapsible-body { padding: 0 var(--sp-28) var(--sp-28); }
+
+        .collapsible-body .eval-table-wrap { background: transparent; }
+
+        .collapsible-body .reference-block {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+
+        .collapsible-body .reference-block h4 { display: none; }
+
+        @keyframes glow-spin { to { transform: rotate(360deg); } }
+
+        .glow-card {
+            position: relative;
+            border-radius: 18px;
+            padding: 2px;
+            isolation: isolate;
+            overflow: hidden;
+            margin-bottom: var(--sp-32);
+        }
+
+        .glow-card::before {
+            content: "";
+            position: absolute;
+            inset: -60%;
+            background: conic-gradient(from 0deg, transparent 0deg, var(--color-liquid-mist) 90deg, var(--color-lavender-phosphor) 200deg, transparent 300deg, transparent 360deg);
+            animation: glow-spin 3.5s linear infinite;
+        }
+
+        .glow-card > .collapsible { position: relative; z-index: 1; margin: 0; }
+
+        .glow-btn {
+            position: relative;
+            display: inline-block;
+            border-radius: 10px;
+            padding: 3px;
+            isolation: isolate;
+            overflow: hidden;
+        }
+
+        .glow-btn::before {
+            content: "";
+            position: absolute;
+            inset: -80%;
+            background: conic-gradient(from 0deg, transparent 0deg, var(--color-lavender-phosphor) 90deg, var(--color-liquid-mist) 200deg, transparent 300deg, transparent 360deg);
+            animation: glow-spin 3s linear infinite;
+        }
+
+        .glow-btn > a { position: relative; z-index: 1; }
+
+        .btn-lg { padding: 18px 40px; font-size: 15px; }
+
+        .how-to-body p { margin-bottom: var(--sp-16); font-size: 14px; }
+        .how-to-body ol { margin: 0 0 var(--sp-20) var(--sp-20); padding: 0; font-size: 14px; }
+        .how-to-body ol li { margin-bottom: 8px; }
+
+        .metrics-columns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--sp-16);
+        }
+
+        .metrics-columns .eval-table-wrap { flex: 1; min-width: 240px; background: rgba(255, 255, 255, 0.03); }
+
+        .metrics-columns .eval-table td.nb-idx {
+            width: 28px;
+            color: var(--color-liquid-mist);
+            font-weight: 500;
+            font-size: 12px;
+        }
+
+        .survey-cta { text-align: center; margin-top: var(--sp-40); }
+        .survey-cta p { color: var(--color-ash); font-size: 14px; margin-bottom: var(--sp-20); }
+
         /* ===================== SCREEN 4: NOTEBOOK SELECTION TABLES ===================== */
         .selection-intro { max-width: 680px; margin: 0 0 var(--sp-40); }
         .selection-intro p { font-size: 15px; color: var(--color-silver-mist); }
@@ -679,8 +785,7 @@
                 <li><button class="step-link" data-target="1" onclick="goToScreen(1)"><span class="step-index">01</span><span class="step-label">Overview</span></button></li>
                 <li><button class="step-link" data-target="2" onclick="goToScreen(2)"><span class="step-index">02</span><span class="step-label">Methodology</span></button></li>
                 <li><button class="step-link" data-target="3" onclick="goToScreen(3)"><span class="step-index">03</span><span class="step-label">Dataset</span></button></li>
-                <li><button class="step-link" data-target="4" onclick="goToScreen(4)"><span class="step-index">04</span><span class="step-label">Selection</span></button></li>
-                <li><button class="step-link" data-target="5" onclick="goToScreen(5)"><span class="step-index">05</span><span class="step-label">Catalog</span></button></li>
+                <li><button class="step-link" data-target="4" onclick="goToScreen(4)"><span class="step-index">04</span><span class="step-label">Catalog</span></button></li>
             </ul>
         </div>
     </nav>
@@ -747,19 +852,32 @@
                 </h2>
 
                 <div class="article-content">
-                    <p>Before reviewing the documentation samples, please read the following short explanation of a key methodological choice in this study: why the output format of the technical documentation you are about to evaluate is Markdown (.md), rather than plain text, HTML, or PDF. This is not an arbitrary implementation choice; it is grounded in the empirical literature on computational notebook documentation, as summarized below.</p>
+                    <p>The technical documentation you are about to evaluate is produced in Markdown (.md) rather than plain text, HTML, or PDF. This is not an arbitrary choice — it follows directly from how computational notebooks are structured and how the field empirically defines "documentation."</p>
 
-                    <p>Computational notebooks (e.g., Jupyter) are not plain scripts with comments; they are built, from their conceptual origin in literate programming, as an interleaving of executable code and rendered narrative text, and that narrative text is written and rendered as Markdown. Saeed Siddik's systematic treatment of notebook structure confirms that the Markdown cell is one of the notebook format's defined cell types, and that Jupyter's own official conversion pipeline (nbconvert) treats Markdown as the source representation from which HTML, LaTeX, and PDF outputs are generated (Siddik, 2025). In other words, Markdown is not merely a documentation format notebooks happen to support; it is the specific format from which every other export representation is derived.</p>
+                    <p>Notebooks such as Jupyter interleave executable code with rendered narrative text, and that narrative text is written as Markdown. Siddik (2025) confirms the Markdown cell as a defined notebook cell type, and notes that Jupyter's own conversion pipeline (nbconvert) treats Markdown as the source format from which HTML, LaTeX, and PDF are generated — every other export representation is derived from Markdown, not the reverse.</p>
 
-                    <p>Independent of the notebook format's internal design, the empirical research literature on notebook documentation quality is itself built around the Markdown cell as its unit of analysis. Two independent research efforts converge on defining "documentation" as Markdown-cell content (Siddik, 2025; Liu et al., 2021). Rule, Tabard, and Hollan's large-scale study of over one million publicly shared notebooks found that 99.8% of all notebook cells are either Markdown or code, establishing Markdown-cell content as the field's own measure of what constitutes a documented notebook (Rule et al., 2018). Most directly relevant to this study, Wang et al.'s CHI 2021 study, which used highly-voted Kaggle notebooks as a proxy for well-documented notebooks, the same rationale this thesis uses for its own dataset, analyzed 80 such notebooks and found that the entirety of observed documentation practice falls into nine Markdown-cell content categories (Process, Headline, Result, Education, Reason, Todo, Reference, Meta-Information, Summary) (Wang et al., 2021).</p>
+                    <p>The empirical literature on notebook documentation quality is itself built around the Markdown cell. Siddik (2025) and Liu et al. (2021) both define "documentation" as Markdown-cell content, and Rule, Tabard, & Hollan (2018), studying over one million public notebooks, found that 99.8% of all cells are either Markdown or code. Most directly relevant here, Wang et al.'s CHI 2021 study of 80 highly-voted Kaggle notebooks — the same selection rationale used for this thesis's dataset — found that observed documentation practice falls entirely into nine Markdown-cell categories: Process, Headline, Result, Education, Reason, Todo, Reference, Meta-Information, and Summary.</p>
 
                     <div class="summary-callout">
                         <strong>Producing the framework's technical documentation output in Markdown, therefore:</strong>
-                        <ul>
-                            <li><strong>(1) Preserves structural fidelity</strong> with the notebook artifact being documented.</li>
-                            <li><strong>(2) Aligns the output</strong> with the field's own empirical standard for what constitutes documentation, allowing direct comparison against the reference literature.</li>
-                            <li><strong>(3) Does not sacrifice presentation flexibility</strong>, because Markdown is the canonical source format from which polished HTML or PDF versions can be mechanically and losslessly generated at any later point, for example via pandoc or nbconvert-style tooling.</li>
-                        </ul>
+                        <div class="eval-table-wrap" style="margin-top: var(--sp-16);">
+                            <table class="eval-table">
+                                <tbody>
+                                    <tr>
+                                        <td class="nb-name" style="width: 22%;">Structural fidelity</td>
+                                        <td class="nb-reason">Preserves structural fidelity with the notebook artifact being documented.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="nb-name">Empirical alignment</td>
+                                        <td class="nb-reason">Aligns the output with the field's own empirical standard for what constitutes documentation, allowing direct comparison against the reference literature.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="nb-name">Format flexibility</td>
+                                        <td class="nb-reason">Does not sacrifice presentation flexibility — Markdown is the canonical source from which polished HTML or PDF versions can be mechanically and losslessly generated later, e.g. via pandoc or nbconvert-style tooling.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -782,15 +900,46 @@
                 </h2>
 
                 <div class="article-content">
-                    <p>This page explains two further methodological choices underlying the materials you are about to review: how the 20 notebooks in the evaluation dataset were selected, and why the human-authored ground-truth documentation takes the specific structure it does.</p>
-
                     <h3>Part A: Dataset Selection</h3>
-                    <p>The 20 notebooks used in this study were selected according to the criteria defined in the thesis proposal, from three independent sources: a public dataset of Kaggle notebooks with rich metadata (KGTorrent; Quaranta, Calefato, & Lanubile, 2021), notebooks independently curated directly from the Kaggle platform, and notebooks independently curated from GitHub. Selection was governed by four criteria, applied jointly: (1) a Kaggle gold/silver medal or a comparable community-engagement threshold, more than 10 votes on Kaggle, or more than 10 stars on the hosting GitHub repository; (2) diversity of the underlying dataset and domain; (3) diversity of complexity and coverage of different stages of the machine learning lifecycle (problem definition, data collection, preprocessing, exploratory data analysis, feature engineering, model selection and training, and model validation); and (4) the presence of rich multimodal outputs, such as charts, tables, and other visual results, as an integral part of the notebook. These criteria were applied deliberately to produce a dataset spanning a wide range of complexity, from short, single-stage notebooks to long, full-lifecycle, multi-model pipelines.</p>
+                    <p>The 20 evaluation notebooks were curated manually by the researcher, drawing on the KGTorrent dataset (Quaranta, Calefato, & Lanubile, 2021) as well as independently selected notebooks from Kaggle and GitHub.</p>
+
+                    <details class="collapsible">
+                        <summary>View the 20 selected notebooks <i class="fa-solid fa-chevron-down chevron"></i></summary>
+                        <div class="collapsible-body">
+                            <div class="eval-table-wrap">
+                                <table class="eval-table">
+                                    <thead>
+                                        <tr><th>Notebook</th><th>Source</th><th>Medal / Votes / Stars</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td class="nb-name">eda-ensemble-model-top-10-percentile</td><td class="nb-medal">KGTorrent</td><td class="nb-medal">Gold — 444 votes</td></tr>
+                                        <tr><td class="nb-name">fraud-detection-with-smote-and-randomforest</td><td class="nb-medal">KGTorrent</td><td class="nb-medal">Bronze — 12 votes</td></tr>
+                                        <tr><td class="nb-name">descriptive-statistics-and-machine-learning-iris</td><td class="nb-medal">KGTorrent</td><td class="nb-medal">Bronze — 22 votes</td></tr>
+                                        <tr><td class="nb-name">car-price-prediction</td><td class="nb-medal">Kaggle</td><td class="nb-medal">Silver — 2,189 votes</td></tr>
+                                        <tr><td class="nb-name">customer-segmentation-and-clustering-analysis</td><td class="nb-medal">Kaggle</td><td class="nb-medal">Silver — 162 votes</td></tr>
+                                        <tr><td class="nb-name">eda-and-models</td><td class="nb-medal">Kaggle</td><td class="nb-medal">Gold — 2,977 votes</td></tr>
+                                        <tr><td class="nb-name">eda-to-prediction-dietanic</td><td class="nb-medal">Kaggle</td><td class="nb-medal">Gold — 6,338 votes</td></tr>
+                                        <tr><td class="nb-name">video-game-sales-eda-visualizations-ml-models</td><td class="nb-medal">Kaggle</td><td class="nb-medal">Bronze — 155 votes</td></tr>
+                                        <tr><td class="nb-name">feature-engineering-for-house-prices</td><td class="nb-medal">Kaggle</td><td class="nb-medal">Bronze — 12 votes</td></tr>
+                                        <tr><td class="nb-name">machine-learning-with-iris-dataset</td><td class="nb-medal">Kaggle</td><td class="nb-medal">Silver — 2,478 votes</td></tr>
+                                        <tr><td class="nb-name">mental-health-eda-prediction</td><td class="nb-medal">Kaggle</td><td class="nb-medal">Gold — 1,566 votes</td></tr>
+                                        <tr><td class="nb-name">spaceship-titanic-a-complete-guide</td><td class="nb-medal">Kaggle</td><td class="nb-medal">Gold — 2,035 votes</td></tr>
+                                        <tr><td class="nb-name">topic-1-exploratory-data-analysis-with-pandas</td><td class="nb-medal">Kaggle</td><td class="nb-medal">Gold — 5,164 votes</td></tr>
+                                        <tr><td class="nb-name">titanic</td><td class="nb-medal">Kaggle</td><td class="nb-medal">Silver — 231 votes</td></tr>
+                                        <tr><td class="nb-name">02_end_to_end_machine_learning_project</td><td class="nb-medal">GitHub</td><td class="nb-medal">13,400★</td></tr>
+                                        <tr><td class="nb-name">Case_Study2_Maintenance_Predictive_Modelling</td><td class="nb-medal">GitHub</td><td class="nb-medal">21★</td></tr>
+                                        <tr><td class="nb-name">Case_Study3_Hotel_Prediction</td><td class="nb-medal">GitHub</td><td class="nb-medal">21★</td></tr>
+                                        <tr><td class="nb-name">covid-19-new-cases-in-italy-prediction-arima</td><td class="nb-medal">GitHub</td><td class="nb-medal">0★</td></tr>
+                                        <tr><td class="nb-name">Machine Learning for Diabetes</td><td class="nb-medal">GitHub</td><td class="nb-medal">4.6k★</td></tr>
+                                        <tr><td class="nb-name">Modeling House Price with Regularized Linear Model & Xgboost</td><td class="nb-medal">GitHub</td><td class="nb-medal">4.6k★</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </details>
 
                     <h3>Part B: Ground-Truth Documentation Structure</h3>
-                    <p>The ground-truth documentation you are about to review was authored as a standalone Markdown document per notebook, rather than as annotations inserted into the notebooks themselves. This was a deliberate methodological choice, made necessary by the evaluation design of this thesis: since the proposed framework generates a single, standalone Markdown file per notebook, the human-authored reference document must take the same form for the two to be meaningfully compared side by side.</p>
-
-                    <p>This choice is further grounded in a substantive distinction the literature draws between code documentation, locally-scoped explanations attached to a specific line or cell of code, and technical documentation in the fuller sense this thesis targets: a structured account of a notebook's purpose, process, reasoning, results, and interpretation, considered as a whole. Wang et al. (2021) found that the dominant, majority use of inline Markdown-cell annotation in real notebooks is local code explanation, while whole-notebook properties, connecting cells that are far apart, synthesizing results across the entire notebook, and covering the full machine learning lifecycle, are, by the same study's own framing, cases that go beyond what locally-scoped annotation typically captures. This gap is echoed throughout the applied literature: Liu et al. (2021) motivate their own documentation-generation model by observing that "one documentation in a markdown cell often corresponds to multiple code cells," and multiple studies link the absence of whole-notebook documentation directly to measured reproducibility failures, for example, Pimentel et al. (2019) found that only 24% of a large sample of GitHub notebooks were fully executable and only 4% reproduced identical results on re-execution, while Kashiwa et al. (2026) found only 2 of 19 attempted notebooks accompanying peer-reviewed Nature publications were successfully reproducible.</p>
+                    <p>The ground-truth documentation was authored as a standalone Markdown document per notebook — not as inline annotations — so it can be directly compared against the framework's own output, which takes the same standalone form. This also reflects a real gap in practice: Wang et al. (2021) found that most inline Markdown annotation explains local code rather than whole-notebook properties such as cross-cell dependencies or full-lifecycle synthesis, a gap linked elsewhere to reproducibility failures (Pimentel et al., 2019; Kashiwa et al., 2026).</p>
 
                     <div class="summary-callout">
                         <strong>Accordingly, each ground-truth document was authored using a fixed, six-section structure, applied identically across all 20 notebooks:</strong>
@@ -804,15 +953,19 @@
                         </ol>
                     </div>
 
-                    <!-- References -->
-                    <div class="reference-block">
-                        <h4>References</h4>
-                        <p>Kashiwa, S., Kurdak, A., Ravi, S., Srikanth, R., Thakur, A., Chandra, S., Truong, J., & Coblenz, M. (2026). A Study of Scientific Computational Notebook Quality. arXiv preprint.</p>
-                        <p>Liu, X., Wang, D., Wang, A. Y., Hou, Y., & Wu, L. (2021). HAConvGNN: Hierarchical Attention Based Convolutional Graph Neural Network for Code Documentation Generation in Jupyter Notebooks. In Findings of the Association for Computational Linguistics: EMNLP 2021.</p>
-                        <p>Pimentel, J. F., Murta, L., Braganholo, V., & Freire, J. (2019). A Large-Scale Study About Quality and Reproducibility of Jupyter Notebooks. In Proceedings of the 16th International Conference on Mining Software Repositories (MSR 2019), 507–517.</p>
-                        <p>Quaranta, L., Calefato, F., & Lanubile, F. (2021). KGTorrent: A Dataset of Python Jupyter Notebooks from Kaggle. In 2021 IEEE/ACM 18th International Conference on Mining Software Repositories (MSR), 550–554.</p>
-                        <p>Wang, A. Y., Wang, D., Drozdal, J., Liu, X., Park, S., Oney, S., & Brooks, C. (2021). What Makes a Well-Documented Notebook? A Case Study of Data Scientists' Documentation Practices in Kaggle. In CHI Conference on Human Factors in Computing Systems Extended Abstracts (CHI '21 Extended Abstracts).</p>
-                    </div>
+                    <details class="collapsible">
+                        <summary>References <i class="fa-solid fa-chevron-down chevron"></i></summary>
+                        <div class="collapsible-body">
+                            <div class="reference-block">
+                                <h4>References</h4>
+                                <p>Kashiwa, S., Kurdak, A., Ravi, S., Srikanth, R., Thakur, A., Chandra, S., Truong, J., & Coblenz, M. (2026). A Study of Scientific Computational Notebook Quality. arXiv preprint.</p>
+                                <p>Liu, X., Wang, D., Wang, A. Y., Hou, Y., & Wu, L. (2021). HAConvGNN: Hierarchical Attention Based Convolutional Graph Neural Network for Code Documentation Generation in Jupyter Notebooks. In Findings of the Association for Computational Linguistics: EMNLP 2021.</p>
+                                <p>Pimentel, J. F., Murta, L., Braganholo, V., & Freire, J. (2019). A Large-Scale Study About Quality and Reproducibility of Jupyter Notebooks. In Proceedings of the 16th International Conference on Mining Software Repositories (MSR 2019), 507–517.</p>
+                                <p>Quaranta, L., Calefato, F., & Lanubile, F. (2021). KGTorrent: A Dataset of Python Jupyter Notebooks from Kaggle. In 2021 IEEE/ACM 18th International Conference on Mining Software Repositories (MSR), 550–554.</p>
+                                <p>Wang, A. Y., Wang, D., Drozdal, J., Liu, X., Park, S., Oney, S., & Brooks, C. (2021). What Makes a Well-Documented Notebook? A Case Study of Data Scientists' Documentation Practices in Kaggle. In CHI Conference on Human Factors in Computing Systems Extended Abstracts (CHI '21 Extended Abstracts).</p>
+                            </div>
+                        </div>
+                    </details>
                 </div>
 
                 <div class="btn-row">
@@ -820,175 +973,14 @@
                         <i class="fa-solid fa-arrow-left"></i> Previous
                     </button>
                     <button class="btn btn-primary" onclick="goToScreen(4)">
-                        View Notebook Selection <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- ==================== SCREEN 4: NOTEBOOK SELECTION BY SOURCE ==================== -->
-        <div id="screen-4" class="screen">
-            <div class="surface-card">
-                <h2 class="section-title">
-                    Final Evaluation Dataset: 20 Selected Notebooks by Source
-                </h2>
-
-                <div class="selection-intro">
-                    <p>The 20 notebooks introduced in the previous section are listed below, grouped by their source. For each notebook, the table shows its community recognition (medal, votes, or GitHub stars) and the specific reason it was included in the evaluation dataset.</p>
-                </div>
-
-                <div class="eval-section">
-                    <div class="eval-section-title">1. KGTorrent-Derived Subset <span class="eval-count">(3 notebooks)</span></div>
-                    <div class="eval-table-wrap">
-                        <table class="eval-table">
-                            <thead>
-                                <tr><th>Notebook</th><th>Medal / Votes</th><th>Reason for Selection</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="nb-name">eda-ensemble-model-top-10-percentile</td>
-                                    <td class="nb-medal">Gold — 444 votes</td>
-                                    <td class="nb-reason">Full lifecycle coverage (EDA → regression → ensemble modeling); highest-voted candidate in the KGTorrent pool</td>
-                                </tr>
-                                <tr>
-                                    <td class="nb-name">fraud-detection-with-smote-and-randomforest</td>
-                                    <td class="nb-medal">Bronze — 12 votes</td>
-                                    <td class="nb-reason">Specialized feature engineering (SMOTE class-imbalance handling), not represented elsewhere</td>
-                                </tr>
-                                <tr>
-                                    <td class="nb-name">descriptive-statistics-and-machine-learning-iris</td>
-                                    <td class="nb-medal">Bronze — 22 votes</td>
-                                    <td class="nb-reason">Short, low-complexity anchor of the dataset's complexity spectrum</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="eval-section">
-                    <div class="eval-section-title">2. Independently Curated Kaggle Notebooks <span class="eval-count">(11 notebooks)</span></div>
-                    <div class="eval-table-wrap">
-                        <table class="eval-table">
-                            <thead>
-                                <tr><th>Notebook</th><th>Medal / Votes</th><th>Reason for Selection</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="nb-name">car-price-prediction</td>
-                                    <td class="nb-medal">Not verified — pending manual confirmation</td>
-                                    <td class="nb-reason">Tabular regression domain diversity (automotive pricing)</td>
-                                </tr>
-                                <tr>
-                                    <td class="nb-name">customer-segmentation-and-clustering-analysis</td>
-                                    <td class="nb-medal">Kaggle Master tier</td>
-                                    <td class="nb-reason">Unsupervised clustering / customer segmentation</td>
-                                </tr>
-                                <tr>
-                                    <td class="nb-name">eda-and-models</td>
-                                    <td class="nb-medal">Kaggle Notebooks Grandmaster (#1 globally)</td>
-                                    <td class="nb-reason">Full EDA-to-modeling pipeline by a top-recognized author; fraud detection domain</td>
-                                </tr>
-                                <tr>
-                                    <td class="nb-name">eda-to-prediction-dietanic</td>
-                                    <td class="nb-medal">Community "Star Notebook"; cited in a peer-reviewed paper (2023)</td>
-                                    <td class="nb-reason">Canonical, externally validated Titanic full-lifecycle example</td>
-                                </tr>
-                                <tr>
-                                    <td class="nb-name">video-game-sales-eda-visualizations-ml-models</td>
-                                    <td class="nb-medal">Not verified — pending manual confirmation</td>
-                                    <td class="nb-reason">Domain diversity (entertainment/gaming sales)</td>
-                                </tr>
-                                <tr>
-                                    <td class="nb-name">feature-engineering-for-house-prices</td>
-                                    <td class="nb-medal">Not verified — pending manual confirmation</td>
-                                    <td class="nb-reason">Regression feature engineering; ⚠️ originality vs. "ryanholbrook"'s notebook of the same title should be manually verified</td>
-                                </tr>
-                                <tr>
-                                    <td class="nb-name">machine-learning-with-iris-dataset</td>
-                                    <td class="nb-medal">Not verified — pending manual confirmation</td>
-                                    <td class="nb-reason">KNN classification variant on the Iris dataset</td>
-                                </tr>
-                                <tr>
-                                    <td class="nb-name">mental-health-eda-prediction</td>
-                                    <td class="nb-medal">Cited in a 2025 academic paper (IIETA)</td>
-                                    <td class="nb-reason">Sensitive/healthcare domain diversity</td>
-                                </tr>
-                                <tr>
-                                    <td class="nb-name">spaceship-titanic-a-complete-guide</td>
-                                    <td class="nb-medal">Widely referenced across tutorials</td>
-                                    <td class="nb-reason">Full-lifecycle notebook on a modern (2022) competition dataset</td>
-                                </tr>
-                                <tr>
-                                    <td class="nb-name">topic-1-exploratory-data-analysis-with-pandas</td>
-                                    <td class="nb-medal">Community "Star Notebook"; mlcourse.ai curriculum</td>
-                                    <td class="nb-reason">Low-complexity, pedagogical EDA anchor</td>
-                                </tr>
-                                <tr>
-                                    <td class="nb-name">titanic</td>
-                                    <td class="nb-medal">Not verified — pending manual confirmation</td>
-                                    <td class="nb-reason">Additional Titanic-domain variant, submission-generation focus</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="eval-section">
-                    <div class="eval-section-title">3. Independently Curated GitHub Notebooks <span class="eval-count">(6 notebooks)</span></div>
-                    <div class="eval-table-wrap">
-                        <table class="eval-table">
-                            <thead>
-                                <tr><th>Notebook</th><th>Stars</th><th>Reason for Selection</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="nb-name">02_end_to_end_machine_learning_project</td>
-                                    <td class="nb-medal">13,400★</td>
-                                    <td class="nb-reason">Canonical full ML lifecycle notebook</td>
-                                </tr>
-                                <tr>
-                                    <td class="nb-name">Case_Study2_Maintenance_Predictive_Modelling</td>
-                                    <td class="nb-medal">21★</td>
-                                    <td class="nb-reason">Industrial/IoT predictive maintenance domain</td>
-                                </tr>
-                                <tr>
-                                    <td class="nb-name">Case_Study3_Hotel_Prediction</td>
-                                    <td class="nb-medal">21★</td>
-                                    <td class="nb-reason">Hospitality/hotel-booking domain</td>
-                                </tr>
-                                <tr>
-                                    <td class="nb-name">covid-19-new-cases-in-italy-prediction-arima</td>
-                                    <td class="nb-medal">0★</td>
-                                    <td class="nb-reason">High quality notebook with full coverage of the intended criteria</td>
-                                </tr>
-                                <tr>
-                                    <td class="nb-name">Machine Learning for Diabetes</td>
-                                    <td class="nb-medal">4.6k★</td>
-                                    <td class="nb-reason">Short, low-complexity anchor; healthcare domain</td>
-                                </tr>
-                                <tr>
-                                    <td class="nb-name">Modeling House Price with Regularized Linear Model & Xgboost</td>
-                                    <td class="nb-medal">4.6k★</td>
-                                    <td class="nb-reason">Regression with gradient boosting (XGBoost)</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="btn-row">
-                    <button class="btn btn-ghost" onclick="goToScreen(3)">
-                        <i class="fa-solid fa-arrow-left"></i> Previous
-                    </button>
-                    <button class="btn btn-primary" onclick="goToScreen(5)">
                         Proceed to Catalog <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- ==================== SCREEN 5: CATALOG OF NOTEBOOKS ==================== -->
-        <div id="screen-5" class="screen">
+        <!-- ==================== SCREEN 4: CATALOG OF NOTEBOOKS ==================== -->
+        <div id="screen-4" class="screen">
             <div class="surface-card">
                 <div class="catalog-intro">
                     <h2 class="section-title" style="margin-bottom: 0;">
@@ -999,17 +991,62 @@
                     </p>
                 </div>
 
+                <div class="glow-card">
+                    <details class="collapsible">
+                        <summary>How to Evaluate This Work <i class="fa-solid fa-chevron-down chevron"></i></summary>
+                        <div class="collapsible-body how-to-body">
+                            <p>Each item below is a machine learning notebook paired with its <strong>Technical Documentation</strong> — a structured Markdown write-up of the notebook's purpose, process, and results (see the six-section structure on the Dataset page). Your task is to review each notebook together with its documentation, then submit your evaluation in the survey form linked at the bottom of this page.</p>
+
+                            <p><strong>For every notebook:</strong></p>
+                            <ol>
+                                <li>Open <strong>Notebook</strong> to review the original, executed notebook.</li>
+                                <li>Open <strong>Technical Documentation</strong> to review its corresponding write-up.</li>
+                                <li>In the survey form, rate the documentation against the metrics below.</li>
+                            </ol>
+
+                            <p><strong>Evaluation metrics:</strong></p>
+                            <div class="metrics-columns">
+                                <div class="eval-table-wrap">
+                                    <table class="eval-table">
+                                        <tbody>
+                                            <tr><td class="nb-idx">1</td><td class="nb-name">Accuracy and Technical Correctness</td></tr>
+                                            <tr><td class="nb-idx">2</td><td class="nb-name">Completeness</td></tr>
+                                            <tr><td class="nb-idx">3</td><td class="nb-name">Clarity and Readability</td></tr>
+                                            <tr><td class="nb-idx">4</td><td class="nb-name">Pragmatic Relevance / Practical Usefulness</td></tr>
+                                            <tr><td class="nb-idx">5</td><td class="nb-name">Machine Learning Lifecycle Coverage</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="eval-table-wrap">
+                                    <table class="eval-table">
+                                        <tbody>
+                                            <tr><td class="nb-idx">6</td><td class="nb-name">Cross-Cell Dependency Analysis Quality</td></tr>
+                                            <tr><td class="nb-idx">7</td><td class="nb-name">Faithfulness to Executed Results</td></tr>
+                                            <tr><td class="nb-idx">8</td><td class="nb-name">Structural Organization</td></tr>
+                                            <tr><td class="nb-idx">9</td><td class="nb-name">Overall Quality Ranking</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
                 <div id="catalog-container"></div>
 
                 <div class="btn-row" style="justify-content: flex-start;">
-                    <button class="btn btn-ghost" onclick="goToScreen(4)">
-                        <i class="fa-solid fa-arrow-left"></i> Back to Selection
+                    <button class="btn btn-ghost" onclick="goToScreen(3)">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Rationale
                     </button>
                 </div>
 
-                <div class="closing-note">
-                    <i class="fa-solid fa-clipboard-check"></i>
-                    <span>After reviewing the notebooks together with their technical documentation, return to the survey page to rate and submit your evaluation.</span>
+                <div class="survey-cta">
+                    <p><i class="fa-solid fa-clipboard-check"></i>&nbsp; Once you've reviewed the notebooks and their technical documentation, submit your ratings in the evaluation survey.</p>
+                    <div class="glow-btn">
+                        <a href="survey.html" target="_blank" class="btn btn-primary btn-lg">
+                            Go to Evaluation Survey <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
